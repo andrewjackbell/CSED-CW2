@@ -24,10 +24,16 @@ public class MainWindow{
 	private JFrame frame;
 	private DifficultyButton[] diffButtons;
 	private JButton playButton;
+	private JButton settingsButton;
 	private JLabel playText;
 	private String difficulty;
 	private JLabel bestText;
 	private JLabel avText;
+	
+	private ImageIcon hoverGear;
+	private ImageIcon defaultGear;
+	private ImageIcon hoverArrow;
+	private ImageIcon defaultArrow;
 	
 
 	public JFrame getFrame() {
@@ -59,13 +65,22 @@ public class MainWindow{
 		avText= new JLabel("Average: "); avText.setFont(medium);
 		playText=new JLabel("PLAY"); playText.setFont(large); playText.setVisible(false);
 		
+		//Image Icons
+		hoverGear = new ImageIcon("resources/hoverGear.png");
+		defaultGear= new ImageIcon("resources/gear.png");
+		hoverArrow = new ImageIcon("resources/hoverArrow.png");
+		defaultArrow = new ImageIcon("resources/arrow.png");
+				
 		//Buttons
 		JButton logoutButton=new JButton("Logout");  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
 		JButton settingsButton = new JButton(); settingsButton.setOpaque(false); settingsButton.setContentAreaFilled(false);
-		settingsButton.setBorder(null);settingsButton.setIcon(new ImageIcon("resources/gear.png")); //Adding icon the settings button
+		settingsButton.setBorder(null);settingsButton.setIcon(defaultGear); //Adding icon the settings button
+		
+		settingsButton.addMouseListener(new ButtonListener());
 		playButton = new JButton(); playButton.setOpaque(false); playButton.setContentAreaFilled(false);
-		playButton.setBorder(null); playButton.setIcon(new ImageIcon("resources/play.png")); //Adding icon to play button
+		playButton.setBorder(null); playButton.setIcon(defaultArrow); //Adding icon to play button
 		playButton.setVisible(false);
+		playButton.addMouseListener(new ButtonListener());
 		
 		diffButtons = new DifficultyButton[3];
 		diffButtons[0]=new DifficultyButton("EASY",Color.GREEN); 
@@ -101,7 +116,7 @@ public class MainWindow{
 
 	
 	private void buttonPressed(MouseEvent e) {
-		//Loops through array of difficulty buttons, hightlights the one pressed and dims the rest
+		//Loops through array of difficulty buttons, highlights the one pressed and dims the rest
 		for (int i=0;i<3;i++) {
 			if (diffButtons[i]==e.getSource()) {
 				diffButtons[i].changeBrightness(true);
@@ -145,13 +160,14 @@ public class MainWindow{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			buttonPressed(e);
-			updateInfo();
+			
 			
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			buttonPressed(e);
+			updateInfo();
 			
 		}
 
@@ -163,13 +179,23 @@ public class MainWindow{
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO make the play, settings buttons do things when hovered over
+			if (e.getSource()==settingsButton) {
+				settingsButton.setIcon(hoverGear);
+			}
+			if (e.getSource()==playButton) {
+				playButton.setIcon(hoverArrow);
+			}
 			
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			//"" "" ""
+			if (e.getSource()==settingsButton) {
+				settingsButton.setIcon(defaultGear);
+			}
+			if (e.getSource()==playButton) {
+				playButton.setIcon(defaultArrow);
+			}
 			
 		}
 		
