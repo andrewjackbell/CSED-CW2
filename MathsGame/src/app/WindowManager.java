@@ -1,7 +1,10 @@
 package app;
 
 import java.awt.CardLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -9,21 +12,25 @@ public class WindowManager {
 	private JFrame frame;
 	private CardLayout layout = new CardLayout();
 	private JPanel container;
-	private MenuWindow menuWindow;
-	private SettingsWindow settingsWindow;
+	private Menu menuWindow;
+	private Login loginWindow;
+	private Settings settingsWindow;
 	
 	
 	public WindowManager() {
-		frame = new JFrame("efdjas");
+		frame = new JFrame("Quick Maffs");
 		frame.setSize(900,900);
 		container = new JPanel(layout);
-		menuWindow = new MenuWindow();
-		settingsWindow = new SettingsWindow();
-		container.add(menuWindow.getMainPanel(),"1");
-		container.add(settingsWindow.getMainPanel(),"2");
+		loginWindow = new Login(this);
+		menuWindow = new Menu(this);
+		settingsWindow = new Settings(this);
+		
+		container.add(loginWindow.getMainPanel(),"login");
+		container.add(menuWindow.getMainPanel(),"menu");
+		container.add(settingsWindow.getMainPanel(),"settings");
 		frame.add(container);
 		frame.setVisible(true);
-		layout.show(container, "1");
+		layout.show(container, "login");
 
 	}
 	
@@ -31,4 +38,11 @@ public class WindowManager {
 		new WindowManager();
 	}
 	
+	public void changeState(String state) {
+		layout.show(container, state);
+	}
+
+	
+	
+
 }
