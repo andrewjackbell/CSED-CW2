@@ -15,16 +15,16 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-public class MenuWindow{
+public class Menu extends Window{
 	
 	Font  titleFont  = new Font("Rockwell", Font.PLAIN, 40);      
 	Font medium = new Font(Font.SERIF,Font.PLAIN,26);
 	Font large = new Font(Font.SERIF,Font.PLAIN,35);
 	
-	private JPanel mainPanel;
 	private DifficultyButton[] diffButtons;
 	private JButton playButton;
 	private JButton settingsButton;
+	private JButton logoutButton;
 	private JLabel playText;
 	private String difficulty;
 	private JLabel bestText;
@@ -36,16 +36,14 @@ public class MenuWindow{
 	
 
 	
-	public JPanel getMainPanel() {
-		return mainPanel;
-	}
 	
-	public MenuWindow(){
+	public Menu(WindowManager manager){
+		super(manager);
+		
 		
 		//Setting up mainPanel
-
-		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.setBackground(Color.BLUE);
+		mainPanel.setLayout(new BorderLayout());
 		
 		//Setting up panels (sections of the window)
 		JPanel leftPanel = new JPanel(); leftPanel.setPreferredSize(new Dimension(260,0)); 
@@ -71,22 +69,24 @@ public class MenuWindow{
 		defaultArrow = new ImageIcon("resources/arrow.png");
 				
 		//Buttons
-		JButton logoutButton=new JButton("Logout");  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
-		JButton settingsButton = new JButton(); settingsButton.setOpaque(false); settingsButton.setContentAreaFilled(false);
-		settingsButton.setBorder(null);settingsButton.setIcon(defaultGear); //Adding icon the settings button
+		logoutButton=new JButton("Logout");  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
+		logoutButton.addMouseListener(new ButtonListener(this));
+		settingsButton = new JButton(); settingsButton.setOpaque(false); settingsButton.setContentAreaFilled(false);
+		settingsButton.setBorder(null); settingsButton.setIcon(defaultGear); //Adding icon the settings button
+		settingsButton.addMouseListener(new ButtonListener(this));
 		
-		settingsButton.addMouseListener(new ButtonListener());
 		playButton = new JButton(); playButton.setOpaque(false); playButton.setContentAreaFilled(false);
 		playButton.setBorder(null); playButton.setIcon(defaultArrow); //Adding icon to play button
+		playButton.addMouseListener(new ButtonListener(this));
 		playButton.setVisible(false);
-		playButton.addMouseListener(new ButtonListener());
+		
 		
 		diffButtons = new DifficultyButton[3];
 		diffButtons[0]=new DifficultyButton("EASY",Color.GREEN); 
 	    diffButtons[1]=new DifficultyButton("MEDIUM", Color.ORANGE); 
 	    diffButtons[2]=new DifficultyButton("HARD",Color.RED);
 	    for (int i=0;i<3;i++) {
-	    	diffButtons[i].addMouseListener(new ButtonListener());
+	    	diffButtons[i].addMouseListener(new ButtonListener(this));
 			leftPanel.add(Box.createRigidArea(new Dimension(0,70)));
 			leftPanel.add(diffButtons[i]);
 	    }
@@ -109,14 +109,14 @@ public class MenuWindow{
 	    mainPanel.add(topPanel, BorderLayout.PAGE_START);
 	    
 	    
+	    
 
 		
 	}
 	
 
-	
-	private void buttonPressed(MouseEvent e) {
-		//Loops through array of difficulty buttons, highlights the one pressed and dims the rest
+	@Override
+	public void mousePress(MouseEvent e) {
 		for (int i=0;i<3;i++) {
 			if (diffButtons[i]==e.getSource()) {
 				diffButtons[i].changeBrightness(true);
@@ -131,9 +131,34 @@ public class MenuWindow{
 				difficulty=diffButtons[i].getText().toLowerCase(); //Sets difficulty string
 				updateInfo();
 			}
-			
+		}
+		if (settingsButton==e.getSource()) {
+			super.manager.changeState("settings");
+		}
+		if (logoutButton==e.getSource()) {
+			super.manager.changeState("login");
 		}
 	}
+	
+	@Override 
+	public void mouseEnter(MouseEvent e) {
+		if (e.getSource()==playButton) {
+			playButton.setIcon(hoverArrow);
+		}
+		else if (e.getSource()==settingsButton) {
+			settingsButton.setIcon(hoverGear);
+		}
+	}
+	@Override 
+	public void mouseExit(MouseEvent e) {
+		if (e.getSource()==playButton) {
+			playButton.setIcon(defaultArrow);
+		}
+		else if (e.getSource()==settingsButton) {
+			settingsButton.setIcon(defaultGear);
+		}
+	}
+	
 	
 	public void updateInfo() {
 		
@@ -159,48 +184,5 @@ public class MenuWindow{
 	
 	
 	
-	public class ButtonListener implements MouseListener{
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			buttonPressed(e);
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			if (e.getSource()==settingsButton) {
-				settingsButton.setIcon(hoverGear);
-			}
-			if (e.getSource()==playButton) {
-				playButton.setIcon(hoverArrow);
-			}
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			if (e.getSource()==settingsButton) {
-				settingsButton.setIcon(defaultGear);
-			}
-			if (e.getSource()==playButton) {
-				playButton.setIcon(defaultArrow);
-			}
-			
-		}
 		
-	}
-	
 }
