@@ -21,10 +21,10 @@ public class Menu extends Window{
 	Font medium = new Font(Font.SERIF,Font.PLAIN,26);
 	Font large = new Font(Font.SERIF,Font.PLAIN,35);
 	
-	private DifficultyButton[] diffButtons;
-	private JButton playButton;
-	private JButton settingsButton;
-	private JButton logoutButton;
+	private Button[] diffButtons;
+	private Button playButton;
+	private Button settingsButton;
+	private Button logoutButton;
 	private JLabel playText;
 	private String difficulty;
 	private JLabel bestText;
@@ -66,22 +66,20 @@ public class Menu extends Window{
 		defaultArrow = new ImageIcon("resources/arrow.png");
 				
 		//Buttons
-		logoutButton=new JButton("Logout");  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
+		logoutButton=new Button("Logout",Color.cyan);  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
 		logoutButton.addMouseListener(new ButtonListener(this));
-		settingsButton = new JButton(); settingsButton.setOpaque(false); settingsButton.setContentAreaFilled(false);
-		settingsButton.setBorder(null); settingsButton.setIcon(defaultGear); //Adding icon the settings button
+		settingsButton = new Button(defaultGear);		 //Adding icon the settings button
 		settingsButton.addMouseListener(new ButtonListener(this));
 		
-		playButton = new JButton(); playButton.setOpaque(false); playButton.setContentAreaFilled(false);
-		playButton.setBorder(null); playButton.setIcon(defaultArrow); //Adding icon to play button
+		playButton = new Button(defaultArrow); //Adding icon to play button
 		playButton.addMouseListener(new ButtonListener(this));
 		playButton.setVisible(false);
 		
 		
-		diffButtons = new DifficultyButton[3];
-		diffButtons[0]=new DifficultyButton("EASY",Color.GREEN); 
-	    diffButtons[1]=new DifficultyButton("MEDIUM", Color.ORANGE); 
-	    diffButtons[2]=new DifficultyButton("HARD",Color.RED);
+		diffButtons = new Button[3];
+		diffButtons[0]=new Button("EASY",Color.GREEN); 
+	    diffButtons[1]=new Button("MEDIUM", Color.ORANGE); 
+	    diffButtons[2]=new Button("HARD",Color.RED);
 	    for (int i=0;i<3;i++) {
 	    	diffButtons[i].addMouseListener(new ButtonListener(this));
 			leftPanel.add(Box.createRigidArea(new Dimension(0,70)));
