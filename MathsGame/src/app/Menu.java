@@ -34,9 +34,6 @@ public class Menu extends Window{
 	private ImageIcon hoverArrow;
 	private ImageIcon defaultArrow;
 	
-
-	
-	
 	public Menu(WindowManager manager){
 		super(manager);
 		
