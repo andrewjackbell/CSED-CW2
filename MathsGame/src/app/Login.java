@@ -2,6 +2,14 @@ package app;
 
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,17 +34,28 @@ public class Login extends Window{
 
 	}
 	
+	public String hash(char[] arr) {
+		String original = Arrays.toString(arr);
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] encodedHash = digest.digest(original.getBytes(StandardCharsets.UTF_8));
+			String out ="";
+			for (int i=0;i<encodedHash.length;i++) {
+	            out += String.format("%02X", encodedHash[i]);
+	        }
+			return out;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return null;
+			
+		}
+		
+	}
+	
+	
 	public void authenticate() {
 		try {
 			if (nameField.getText().equals("andy")){
-<<<<<<< Updated upstream
-				
-					manager.changeState("menu");
-				
-			}
-
-		}catch(NullPointerException e) {}
-=======
 					/*
 					char[] givenPass = passField.getPassword();
 					File file = new File("resources/data/chicken.txt");
@@ -52,7 +71,6 @@ public class Login extends Window{
 		}// catch (IOException e) {
 		//	e.printStackTrace();
 		//}
->>>>>>> Stashed changes
 
 	}
 	@Override
