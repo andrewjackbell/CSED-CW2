@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 public class Settings extends Window{
 	
-	JButton backButton;
+	private JButton backButton;
 	
 	public Settings(WindowManager manager) {
 		super(manager);
