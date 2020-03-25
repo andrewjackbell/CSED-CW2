@@ -42,12 +42,9 @@ public class Login extends Window{
 		mainPanel.add(signUpButton,BorderLayout.CENTER);
 		mainPanel.add(nameField,BorderLayout.CENTER);
 		mainPanel.add(passField,BorderLayout.CENTER);
-<<<<<<< Updated upstream
-		
-=======
 		mainPanel.add(loginButton, BorderLayout.CENTER);
 		mainPanel.add(alertText,BorderLayout.PAGE_START);
->>>>>>> Stashed changes
+
 		
 	}
 	
@@ -71,7 +68,6 @@ public class Login extends Window{
 	
 	
 	public void authenticate() {
-<<<<<<< Updated upstream
 		try {
 			if (nameField.getText().equals("andy")){
 					char[] givenPass = passField.getPassword();
@@ -86,7 +82,7 @@ public class Login extends Window{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-=======
+
 		File file = new File("resources/data/"+nameField.getText()+".txt");
 
 			try {
@@ -103,7 +99,6 @@ public class Login extends Window{
 				e.printStackTrace();
 			}
 		
->>>>>>> Stashed changes
 
 	}
 	
