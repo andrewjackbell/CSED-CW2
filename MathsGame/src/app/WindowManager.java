@@ -15,6 +15,7 @@ public class WindowManager {
 	private Menu menuWindow;
 	private Login loginWindow;
 	private Settings settingsWindow;
+	private String user;
 	
 	
 	public WindowManager() {
@@ -39,7 +40,13 @@ public class WindowManager {
 	}
 	
 	public void changeState(String state) {
+		if (state.equals("menu")) {
+			menuWindow.setUser(user);
+		}
 		layout.show(container, state);
+	}
+	public void setUser(String username) {
+		user=username;
 	}
 
 	

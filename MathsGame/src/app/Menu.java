@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.*;
 
@@ -21,23 +23,27 @@ public class Menu extends Window{
 	Font medium = new Font(Font.SERIF,Font.PLAIN,26);
 	Font large = new Font(Font.SERIF,Font.PLAIN,35);
 	
-	private Button[] diffButtons;
-	private Button playButton;
-	private Button settingsButton;
-	private Button logoutButton;
+	private String user;
+	private ButtonE[] diffButtons;
+	private ButtonE playButton;
+	private ButtonE settingsButton;
+	private ButtonE logoutButton;
 	private JLabel playText;
-	private String difficulty;
+	private int difficulty;
 	private JLabel bestText;
 	private JLabel avText;
 	private ImageIcon hoverGear;
 	private ImageIcon defaultGear;
 	private ImageIcon hoverArrow;
 	private ImageIcon defaultArrow;
+	private int[] bests;
+	private int[] averages;
+	
 	
 	public Menu(WindowManager manager){
 		super(manager);
-		
-		
+		bests=new int[3];
+		averages=new int[3];
 		//Setting up mainPanel
 		mainPanel.setBackground(Color.BLUE);
 		mainPanel.setLayout(new BorderLayout());
@@ -66,20 +72,18 @@ public class Menu extends Window{
 		defaultArrow = new ImageIcon("resources/arrow.png");
 				
 		//Buttons
-		logoutButton=new Button("Logout",Color.cyan);  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
+		logoutButton=new ButtonE("Logout",Color.cyan);  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
 		logoutButton.addMouseListener(new ButtonListener(this));
-		settingsButton = new Button(defaultGear);		 //Adding icon the settings button
-		settingsButton.addMouseListener(new ButtonListener(this));
-		
-		playButton = new Button(defaultArrow); //Adding icon to play button
+		settingsButton = new ButtonE(defaultGear);
+		settingsButton.addMouseListener(new ButtonListener(this));	
+		playButton = new ButtonE(defaultArrow); 
 		playButton.addMouseListener(new ButtonListener(this));
 		playButton.setVisible(false);
 		
-		
-		diffButtons = new Button[3];
-		diffButtons[0]=new Button("EASY",Color.GREEN); 
-	    diffButtons[1]=new Button("MEDIUM", Color.ORANGE); 
-	    diffButtons[2]=new Button("HARD",Color.RED);
+		diffButtons = new ButtonE[3];
+		diffButtons[0]=new ButtonE("EASY",Color.GREEN); 
+	    diffButtons[1]=new ButtonE("MEDIUM", Color.ORANGE); 
+	    diffButtons[2]=new ButtonE("HARD",Color.RED);
 	    for (int i=0;i<3;i++) {
 	    	diffButtons[i].addMouseListener(new ButtonListener(this));
 			leftPanel.add(Box.createRigidArea(new Dimension(0,70)));
@@ -121,10 +125,10 @@ public class Menu extends Window{
 						 
 					 }
 				}
-				playButton.setVisible(true); //Shows play button and accompanying text
-				playText.setVisible(true);
-				difficulty=diffButtons[i].getText().toLowerCase(); //Sets difficulty string
+				playButton.setVisible(true); playText.setVisible(true);//Shows play button and accompanying text
+				difficulty=i;
 				updateInfo();
+				refreshValues();
 			}
 		}
 		if (settingsButton==e.getSource()) {
@@ -158,13 +162,26 @@ public class Menu extends Window{
 	public void updateInfo() {
 		
 		//Reads file depending on difficulty and changes stats on the stats pane
-		String file = "resources/data/"+difficulty+".txt";
+		String file = "resources/data/"+user+".txt";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
-			String best = br.readLine();
-			String average = br.readLine();
-			bestText.setText("Best: "+best);
-			avText.setText("Average: "+average);
+			br.readLine();
+			for (int i=0;i<difficulty;i++) {
+				br.readLine();
+			}
+			String[] scores =br.readLine().split(",");
+			int max= 0;
+			int total=0;
+			for (int i=0;i<scores.length;i++) {
+				int current = Integer.parseInt(scores[i]);
+				total+=current;
+				if (current>max) {
+					max=current;
+				}
+			}
+			int average = total/scores.length;
+			this.averages[difficulty]=average;
+			this.bests[difficulty]=max;
 			br.close();
 			
 		} catch (FileNotFoundException e) {
@@ -172,9 +189,16 @@ public class Menu extends Window{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
+	}
+	
+	public void refreshValues() {
+		//difficulty = diff;
+		avText.setText("Average: "+Integer.toString(averages[difficulty]));
+		bestText.setText("Best: "+Integer.toString(bests[difficulty]));
+	}
+	
+	public void setUser(String user) {
+		this.user=user;
 	}
 	
 	

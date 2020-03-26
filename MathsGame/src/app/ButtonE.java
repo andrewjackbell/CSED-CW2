@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.Border;
 
-public class Button extends JButton{
+public class ButtonE extends JButton{
 
 	private static final long serialVersionUID = 1L;
 
@@ -19,7 +19,7 @@ public class Button extends JButton{
 	private Color dim;
 	
 	private Border border = BorderFactory.createLineBorder(Color.BLACK);
-	public Button(ImageIcon icon){
+	public ButtonE(ImageIcon icon){
 		super();
 		this.setOpaque(false); 
 		this.setContentAreaFilled(false);
@@ -27,7 +27,7 @@ public class Button extends JButton{
 		this.setIcon(icon);
 	
 	}
-	public Button(String text, Color color){
+	public ButtonE(String text, Color color){
 		super(text);
 		bright = color.brighter().brighter();
 		dim= color.darker().darker();
