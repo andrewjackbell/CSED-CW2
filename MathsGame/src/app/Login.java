@@ -34,9 +34,9 @@ public class Login extends Window{
 		
 		nameField= new JTextField(16);
 		passField = new JPasswordField(16);
-		signUpButton = new Button("Sign Up",Color.CYAN);
+		signUpButton = new GButton("Sign Up",Color.CYAN);
 		signUpButton.addMouseListener(new ButtonListener(this));
-		loginButton = new Button("Login",Color.MAGENTA);
+		loginButton = new GButton("Login",Color.MAGENTA);
 		loginButton.addMouseListener(new ButtonListener(this));
 		alertText = new JLabel("");
 		mainPanel.add(signUpButton,BorderLayout.CENTER);
@@ -68,29 +68,21 @@ public class Login extends Window{
 	
 	
 	public void authenticate() {
-		try {
-			if (nameField.getText().equals("andy")){
-					char[] givenPass = passField.getPassword();
-					File file = new File("resources/data/chicken.txt");
-					PrintWriter pw = new PrintWriter(file);
-					pw.println(hash(givenPass));
-					pw.close();
-			}
-
-		}catch(NullPointerException e) {
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		File file = new File("resources/data/"+nameField.getText()+".txt");
-
+		String username = nameField.getText();
+		char[] password = passField.getPassword();
+		File file = new File("resources/data/"+username+".txt");
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(file));
-				if (br.readLine().equals(hash(passField.getPassword()))) {
+				
+				if (br.readLine().equals(hash(password))) {
+					br.close();
+					nameField.setText(null);
+					passField.setText(null);
+					manager.setUser(username);
 					manager.changeState("menu");
 				}else {
 					alertText.setText("Incorrect Password");
+					br.close();
 				}
 				
 			} catch (FileNotFoundException e) {
@@ -111,6 +103,7 @@ public class Login extends Window{
 				PrintWriter pw = new PrintWriter(file);
 				pw.println(hash(password));
 				pw.close();
+				alertText.setText("User Created");
 			}else {
 				alertText.setText("Username taken");
 			}
