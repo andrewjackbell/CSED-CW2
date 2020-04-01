@@ -15,7 +15,9 @@ public class WindowManager {
 	private Menu menuWindow;
 	private Login loginWindow;
 	private Settings settingsWindow;
+	private Game gameWindow;
 	private String user;
+	private int difficulty;
 	
 	
 	public WindowManager() {
@@ -25,10 +27,12 @@ public class WindowManager {
 		loginWindow = new Login(this);
 		menuWindow = new Menu(this);
 		settingsWindow = new Settings(this);
+		gameWindow = new Game(this);
 		
 		container.add(loginWindow.getMainPanel(),"login");
 		container.add(menuWindow.getMainPanel(),"menu");
 		container.add(settingsWindow.getMainPanel(),"settings");
+		container.add(gameWindow.getMainPanel(),"game");
 		frame.add(container);
 		frame.setVisible(true);
 		layout.show(container, "login");
@@ -42,11 +46,16 @@ public class WindowManager {
 	public void changeState(String state) {
 		if (state.equals("menu")) {
 			menuWindow.setUser(user);
+		}if (state.equals("game")) {
+			gameWindow.playGame(difficulty, user);
 		}
 		layout.show(container, state);
 	}
-	public void setUser(String username) {
-		user=username;
+	public void setUser(String user) {
+		this.user=user;
+	}
+	public void setDifficulty(int difficulty) {
+		this.difficulty=difficulty;
 	}
 
 	

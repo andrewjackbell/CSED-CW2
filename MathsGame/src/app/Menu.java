@@ -24,10 +24,10 @@ public class Menu extends Window{
 	Font large = new Font(Font.SERIF,Font.PLAIN,35);
 	
 	private String user;
-	private ButtonE[] diffButtons;
-	private ButtonE playButton;
-	private ButtonE settingsButton;
-	private ButtonE logoutButton;
+	private GButton[] diffButtons;
+	private GButton playButton;
+	private GButton settingsButton;
+	private GButton logoutButton;
 	private JLabel playText;
 	private int difficulty;
 	private JLabel bestText;
@@ -72,18 +72,18 @@ public class Menu extends Window{
 		defaultArrow = new ImageIcon("resources/arrow.png");
 				
 		//Buttons
-		logoutButton=new ButtonE("Logout",Color.cyan);  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
+		logoutButton=new GButton("Logout",Color.cyan);  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
 		logoutButton.addMouseListener(new ButtonListener(this));
-		settingsButton = new ButtonE(defaultGear);
+		settingsButton = new GButton(defaultGear);
 		settingsButton.addMouseListener(new ButtonListener(this));	
-		playButton = new ButtonE(defaultArrow); 
+		playButton = new GButton(defaultArrow); 
 		playButton.addMouseListener(new ButtonListener(this));
 		playButton.setVisible(false);
 		
-		diffButtons = new ButtonE[3];
-		diffButtons[0]=new ButtonE("EASY",Color.GREEN); 
-	    diffButtons[1]=new ButtonE("MEDIUM", Color.ORANGE); 
-	    diffButtons[2]=new ButtonE("HARD",Color.RED);
+		diffButtons = new GButton[3];
+		diffButtons[0]=new GButton("EASY",Color.GREEN); 
+	    diffButtons[1]=new GButton("MEDIUM", Color.ORANGE); 
+	    diffButtons[2]=new GButton("HARD",Color.RED);
 	    for (int i=0;i<3;i++) {
 	    	diffButtons[i].addMouseListener(new ButtonListener(this));
 			leftPanel.add(Box.createRigidArea(new Dimension(0,70)));
@@ -137,6 +137,11 @@ public class Menu extends Window{
 		if (logoutButton==e.getSource()) {
 			super.manager.changeState("login");
 		}
+		if (playButton==e.getSource()) {
+			super.manager.setDifficulty(difficulty);
+			super.manager.changeState("game");
+			
+		}
 	}
 	
 	@Override 
@@ -186,13 +191,15 @@ public class Menu extends Window{
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (NullPointerException e) {
+			
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void refreshValues() {
-		//difficulty = diff;
 		avText.setText("Average: "+Integer.toString(averages[difficulty]));
 		bestText.setText("Best: "+Integer.toString(bests[difficulty]));
 	}

@@ -34,9 +34,9 @@ public class Login extends Window{
 		
 		nameField= new JTextField(16);
 		passField = new JPasswordField(16);
-		signUpButton = new ButtonE("Sign Up",Color.CYAN);
+		signUpButton = new GButton("Sign Up",Color.CYAN);
 		signUpButton.addMouseListener(new ButtonListener(this));
-		loginButton = new ButtonE("Login",Color.MAGENTA);
+		loginButton = new GButton("Login",Color.MAGENTA);
 		loginButton.addMouseListener(new ButtonListener(this));
 		alertText = new JLabel("");
 		mainPanel.add(signUpButton,BorderLayout.CENTER);
