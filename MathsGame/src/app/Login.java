@@ -2,6 +2,7 @@ package app;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,9 +29,15 @@ public class Login extends Window{
 	private JButton signUpButton;
 	private JButton loginButton;
 	private JLabel alertText;
+	private JPanel centerPanel;
+	private JPanel southPanel;
+	private JPanel blankPanel;
 	
 	public Login(WindowManager manager) {
 		super(manager);
+		centerPanel = new JPanel(); centerPanel.setPreferredSize(new Dimension(100,100));
+		southPanel=new JPanel();
+		blankPanel = new JPanel(); blankPanel.setPreferredSize(new Dimension(100,100));
 		
 		nameField= new JTextField(16);
 		passField = new JPasswordField(16);
@@ -38,12 +45,18 @@ public class Login extends Window{
 		signUpButton.addMouseListener(new ButtonListener(this));
 		loginButton = new GButton("Login",Color.MAGENTA);
 		loginButton.addMouseListener(new ButtonListener(this));
-		alertText = new JLabel("");
-		mainPanel.add(signUpButton,BorderLayout.CENTER);
-		mainPanel.add(nameField,BorderLayout.CENTER);
-		mainPanel.add(passField,BorderLayout.CENTER);
-		mainPanel.add(loginButton, BorderLayout.CENTER);
-		mainPanel.add(alertText,BorderLayout.PAGE_START);
+		alertText = new JLabel(" ");
+		alertText.setPreferredSize(new Dimension(100,100));
+		centerPanel.add(nameField);
+		centerPanel.add(passField);
+		southPanel.add(signUpButton);
+		southPanel.add(loginButton);
+		
+		//mainPanel.add(blankPanel,BorderLayout.PAGE_END);
+		mainPanel.add(centerPanel, BorderLayout.CENTER);
+		mainPanel.add(southPanel,BorderLayout.SOUTH);
+		mainPanel.add(alertText,BorderLayout.NORTH);
+		
 
 		
 	}
@@ -97,9 +110,9 @@ public class Login extends Window{
 	public void createUser() {
 		String username = nameField.getText();
 		char[] password = passField.getPassword();
-		if (username.length() < 1) {
-			alertText.setText("Username must be at least one character");
-		} else if (password.length() < 6 || password.length() > 16) {
+		if (username.length() < 2) {
+			alertText.setText("Username must be at least 2 characters");
+		} else if (password.length < 6 || password.length > 16) {
 			alertText.setText("Password must be between 6 and 16 characters");
 		} else {		
 			File file = new File("resources/data/"+username+".txt");

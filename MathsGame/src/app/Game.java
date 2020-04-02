@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
@@ -21,6 +22,7 @@ public class Game extends Window {
 	
 	public Game(WindowManager manager) {
 		super(manager);
+		this.mainPanel.setLayout(new FlowLayout());
 		questionField = new JLabel("question here");
 		cheatField = new JLabel();
 		answerField = new JTextField(16);
@@ -44,11 +46,6 @@ public class Game extends Window {
 	
 			generateQuestion();
 			
-			
-		
-			
-			
-		
 		
 	}
 	

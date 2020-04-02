@@ -46,7 +46,6 @@ public class Menu extends Window{
 		averages=new int[3];
 		//Setting up mainPanel
 		mainPanel.setBackground(Color.BLUE);
-		mainPanel.setLayout(new BorderLayout());
 		
 		//Setting up panels (sections of the window)
 		JPanel leftPanel = new JPanel(); leftPanel.setPreferredSize(new Dimension(260,0)); 

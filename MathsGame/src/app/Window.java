@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
@@ -10,7 +11,7 @@ public abstract class Window {
 	
 	public Window(WindowManager manager) {
 		this.manager=manager;
-		mainPanel = new JPanel();
+		mainPanel = new JPanel(new BorderLayout());
 	}
 	public JPanel getMainPanel() {
 		return mainPanel;
