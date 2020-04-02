@@ -80,7 +80,7 @@ public class Login extends Window{
 					passField.setText(null);
 					manager.setUser(username);
 					manager.changeState("menu");
-				}else {
+				} else {
 					alertText.setText("Incorrect Password");
 					br.close();
 				}
@@ -97,18 +97,24 @@ public class Login extends Window{
 	public void createUser() {
 		String username = nameField.getText();
 		char[] password = passField.getPassword();
-		File file = new File("resources/data/"+username+".txt");
-		try {
-			if (file.createNewFile()) {
-				PrintWriter pw = new PrintWriter(file);
-				pw.println(hash(password));
-				pw.close();
-				alertText.setText("User Created");
-			}else {
-				alertText.setText("Username taken");
+		if (username.length() < 1) {
+			alertText.setText("Username must be at least one character");
+		} else if (password.length() < 6 || password.length() > 16) {
+			alertText.setText("Password must be between 6 and 16 characters");
+		} else {		
+			File file = new File("resources/data/"+username+".txt");
+			try {
+				if (file.createNewFile()) {
+					PrintWriter pw = new PrintWriter(file);
+					pw.println(hash(password));
+					pw.close();
+					alertText.setText("User Created");
+				}else {
+					alertText.setText("Username taken");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 	@Override
