@@ -3,6 +3,7 @@ package app;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -38,19 +39,24 @@ public class Login extends Window{
 	private JButton loginButton;
 	
 	private JLabel alertText;
-	
+	Font medium = new Font(Font.SERIF,Font.PLAIN,26);
 	
 
 	
 	
 	public Login(WindowManager manager) {
 		super(manager);
-		centerPanel = new JPanel(); centerPanel.setLayout(new GridLayout(2,2,10,10));centerPanel.setPreferredSize(new Dimension(100,100));
-		southPanel=new JPanel(); southPanel.setPreferredSize(new Dimension(100,400));
+		centerPanel = new JPanel(); centerPanel.setLayout(new GridLayout(3,2,10,10));centerPanel.setSize(new Dimension(100,100));
+		southPanel=new JPanel(); southPanel.setPreferredSize(new Dimension(100,500));
 		eastPanel = new JPanel(); eastPanel.setPreferredSize(new Dimension(300,100));
-		
-		
+		westPanel = new JPanel(); westPanel.setPreferredSize(new Dimension(300,100));
+		JPanel blankPanel = new JPanel();
+		JPanel blankPanel1 = new JPanel();
+		JPanel blankPanel2 = new JPanel();
+		JPanel blankPanel3 = new JPanel();
+
 		nameField= new JTextField("Username",16);
+		nameField.setPreferredSize(new Dimension(0,10));
 		nameField.setForeground(Color.GRAY);
 		nameField.addFocusListener(new FocusListener() {
 
@@ -69,7 +75,7 @@ public class Login extends Window{
 			}
 	
 			});      
-		nameField.setPreferredSize(new Dimension(0,50));
+		
 		passField = new JPasswordField("Password",16);
 		passField.setForeground(Color.GRAY);
 		passField.setEchoChar((char)0);
@@ -98,9 +104,13 @@ public class Login extends Window{
 		signUpButton.addMouseListener(new ButtonListener(this));
 		loginButton = new GButton("Login",Color.MAGENTA);
 		loginButton.addMouseListener(new ButtonListener(this));
-		alertText = new JLabel(" ");
-		alertText.setPreferredSize(new Dimension(100,200));
-
+		alertText = new JLabel("Welcome to quick maffs. Please login or sign up");
+		alertText.setFont(medium);
+		alertText.setPreferredSize(new Dimension(100,120));
+		centerPanel.add(blankPanel);
+		centerPanel.add(blankPanel1);
+		centerPanel.add(blankPanel2);
+		centerPanel.add(blankPanel3);
 		centerPanel.add(nameField);
 		centerPanel.add(eastPanel);
 		centerPanel.add(passField);
@@ -169,9 +179,12 @@ public class Login extends Window{
 	public void createUser() {
 		String username = nameField.getText();
 		char[] password = passField.getPassword();
-		if (username.length() < 2) {
+		
+		
+		
+		if (username.length() < 2||username.equals("Username")) {
 			alertText.setText("Username must be at least 2 characters");
-		} else if (password.length < 6 || password.length > 16) {
+		} else if (password.length < 6 || password.length > 16||String.valueOf(password).equals("Password")) {
 			alertText.setText("Password must be between 6 and 16 characters");
 		} else {		
 			File file = new File("resources/data/"+username+".txt");
@@ -189,6 +202,7 @@ public class Login extends Window{
 			}
 		}
 	}
+	
 	@Override
 	public void mousePress(MouseEvent e) {
 		if (e.getSource()==signUpButton) {
@@ -198,6 +212,8 @@ public class Login extends Window{
 			authenticate();
 		}
 	}
+	
+	
 	private void resetPassword() {
 		passField.setEchoChar((char)0);
 		passField.setText("Password");
