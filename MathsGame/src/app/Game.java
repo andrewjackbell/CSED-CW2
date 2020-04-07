@@ -11,13 +11,14 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class Game extends Window {
-	String[] operators = {"+","-","/","*"};
-	JLabel questionField;
-	JTextField answerField;
-	String currentAnswer;
-	JLabel cheatField;
+	private int difficulty;
+	private String user;
+	private String[] operators = {"+","-","/","*"};
+	private JLabel questionField;
+	private JTextField answerField;
+	private String currentAnswer;
+	private JLabel cheatField;
 	int score;
-	
 	boolean nextQuestion;
 	
 	public Game(WindowManager manager) {
@@ -37,6 +38,7 @@ public class Game extends Window {
 		mainPanel.add(questionField,BorderLayout.CENTER);
 		mainPanel.add(answerField,BorderLayout.CENTER);
 	}
+	
 	
 	
 	public void playGame(int difficulty, String user) {
@@ -82,8 +84,14 @@ public class Game extends Window {
 		else {
 			return rand1/rand2;
 		}
-		
-		
 	}
+	public void setUser(String user) {
+		this.user=user;
+	}
+	public void setDifficulty(int difficulty) {
+		this.difficulty=difficulty;
+	}
+	
+	
 
 }
