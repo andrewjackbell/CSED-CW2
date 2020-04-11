@@ -18,6 +18,7 @@ public class WindowManager {
 	private Game gameWindow;
 	private String user;
 	private int difficulty;
+	private int score;
 	
 	
 	public WindowManager() {
@@ -46,6 +47,7 @@ public class WindowManager {
 	public void changeState(String state) {
 		if (state.equals("menu")) {
 			menuWindow.setUser(user);
+			menuWindow.setLastScore(score);
 		}
 		layout.show(container, state);
 		if (state.equals("game")) {
@@ -58,6 +60,11 @@ public class WindowManager {
 	}
 	public void setDifficulty(int difficulty) {
 		this.difficulty=difficulty;
+	}
+
+	public void setScore(int score) {
+		this.score=score;
+		
 	}
 
 	

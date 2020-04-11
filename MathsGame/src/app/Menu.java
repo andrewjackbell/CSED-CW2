@@ -28,40 +28,49 @@ public class Menu extends Window{
 	private GButton playButton;
 	private GButton settingsButton;
 	private GButton logoutButton;
+	private GButton refreshButton;
 	private JLabel playText;
 	private int difficulty;
 	private JLabel bestText;
 	private JLabel avText;
+	private JLabel lastText;
 	private ImageIcon hoverGear;
 	private ImageIcon defaultGear;
 	private ImageIcon hoverArrow;
 	private ImageIcon defaultArrow;
+	private ImageIcon circleArrow;
 	private int[] bests;
 	private int[] averages;
+	private int[] last;
 	
 	
 	public Menu(WindowManager manager){
 		super(manager);
 		bests=new int[3];
 		averages=new int[3];
+		last = new int[3];
 		//Setting up mainPanel
 		mainPanel.setBackground(Color.BLUE);
 		
 		//Setting up panels (sections of the window)
+		JPanel rightPanel = new JPanel(); rightPanel.setPreferredSize(new Dimension(60,50));
 		JPanel leftPanel = new JPanel(); leftPanel.setPreferredSize(new Dimension(260,0)); 
 		leftPanel.setLayout(new BoxLayout(leftPanel,BoxLayout.Y_AXIS));
 		JPanel bottomPanel = new JPanel(); bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		bottomPanel.setPreferredSize(new Dimension(0,100));
 		JPanel topPanel=new JPanel(new BorderLayout(100,0));
-		JPanel infoPanel = new JPanel(); infoPanel.setLayout(new BoxLayout(infoPanel,BoxLayout.Y_AXIS));
+		JPanel infoPanel = new JPanel(); infoPanel.setLayout(new BorderLayout());
 	    infoPanel.setBackground(Color.LIGHT_GRAY); infoPanel.setPreferredSize(new Dimension(500,50));	     
-	    JPanel rightPanel = new JPanel(); rightPanel.setPreferredSize(new Dimension(60,50));
-		
+	    JPanel leftInfo = new JPanel(); leftInfo.setLayout(new BoxLayout(leftInfo,BoxLayout.Y_AXIS));
+		JPanel rightInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    
+	    
 		//Text Labels
 		JLabel title=new JLabel("MAIN MENU"); title.setFont(titleFont); 
 		JLabel infoTitle = new JLabel("STATS"); infoTitle.setFont(large);
 		bestText= new JLabel("Best: "); bestText.setFont(medium);
 		avText= new JLabel("Average: "); avText.setFont(medium);
+		lastText = new JLabel("Previous: "); avText.setFont(medium);
 		playText=new JLabel("PLAY"); playText.setFont(large); playText.setVisible(false);
 		
 		//Image Icons
@@ -69,6 +78,7 @@ public class Menu extends Window{
 		defaultGear= new ImageIcon("resources/gear.png");
 		hoverArrow = new ImageIcon("resources/hoverArrow.png");
 		defaultArrow = new ImageIcon("resources/arrow.png");
+		circleArrow = new ImageIcon("resources/circleArrow.png");
 				
 		//Buttons
 		logoutButton=new GButton("Logout",Color.cyan);  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
@@ -78,6 +88,8 @@ public class Menu extends Window{
 		playButton = new GButton(defaultArrow); 
 		playButton.addMouseListener(new ButtonListener(this));
 		playButton.setVisible(false);
+		refreshButton = new GButton(circleArrow);
+		
 		
 		diffButtons = new GButton[3];
 		diffButtons[0]=new GButton("EASY",Color.GREEN); 
@@ -95,16 +107,21 @@ public class Menu extends Window{
 		topPanel.add(settingsButton,BorderLayout.LINE_END);
 		bottomPanel.add(playText);
 		bottomPanel.add(playButton);
-	    infoPanel.add(infoTitle); 
-	    infoPanel.add(bestText);
-	    infoPanel.add(avText);
-
+	    leftInfo.add(infoTitle); 
+	    leftInfo.add(bestText);
+	    leftInfo.add(avText);
+	    leftInfo.add(lastText);
+	    rightInfo.add(refreshButton);
+	    infoPanel.add(leftInfo, BorderLayout.CENTER);
+	    infoPanel.add(rightInfo, BorderLayout.EAST);
+	    
 	    //Adding sub-panels to main panel
 	    mainPanel.add(rightPanel, BorderLayout.LINE_END);
 	    mainPanel.add(bottomPanel,BorderLayout.PAGE_END);
 	    mainPanel.add(infoPanel, BorderLayout.CENTER);
 	    mainPanel.add(leftPanel, BorderLayout.WEST);
 	    mainPanel.add(topPanel, BorderLayout.PAGE_START);
+	    
 	    
 	    
 	    
@@ -201,10 +218,14 @@ public class Menu extends Window{
 	public void refreshValues() {
 		avText.setText("Average: "+Integer.toString(averages[difficulty]));
 		bestText.setText("Best: "+Integer.toString(bests[difficulty]));
+		lastText.setText("Previous: "+Integer.toString(last[difficulty]));
 	}
 	
 	public void setUser(String user) {
 		this.user=user;
+	}
+	public void setLastScore(int score) {
+		this.last[difficulty]=score;
 	}
 	
 	

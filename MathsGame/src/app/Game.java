@@ -42,18 +42,33 @@ public class Game extends Window {
 	
 	
 	public void playGame(int difficulty, String user) {
-			
 			score=0;
-			//long time = System.currentTimeMillis();
-	
-			generateQuestion();
-			
+			nextQuestion=true;
+			Thread game = new Thread() {
+		    public void run() {
+				long time = System.currentTimeMillis();
+				while (System.currentTimeMillis()<time+10000) {
+					synchronized(this) {
+						if (nextQuestion==true) {
+							nextQuestion=false;
+							generateQuestion();
+						}
+					}
+				}
+				manager.setScore(score);
+				
+				manager.changeState("menu");
+		    }  
+		};
+		game.start();
 		
+
 	}
 	
 	public void checkAnswer() {
 		if (answerField.getText().equals(currentAnswer)) {
 			questionField.setText("correct answer");
+			score++;
 			synchronized(this) {
 				nextQuestion=true;
 			}
@@ -65,7 +80,7 @@ public class Game extends Window {
 		int i = (int) (Math.random()*4);
 		String operator = operators[i];
 		String answer = String.valueOf(operate(rand1,rand2,operator));
-		String question = rand1+operator+rand2+"=?";
+		String question = rand1+operator+rand2+" = ?";
 		questionField.setText(question);
 		currentAnswer=answer;
 		cheatField.setText("answer is "+ currentAnswer);
