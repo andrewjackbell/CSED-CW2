@@ -4,8 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -41,7 +46,7 @@ public class Game extends Window {
 	
 	
 	
-	public void playGame(int difficulty, String user) {
+	public void playGame() {
 			score=0;
 			nextQuestion=true;
 			Thread game = new Thread() {
@@ -55,6 +60,9 @@ public class Game extends Window {
 						}
 					}
 				}
+				
+				
+				writeScore(score);
 				manager.setScore(score);
 				
 				manager.changeState("menu");
@@ -107,6 +115,29 @@ public class Game extends Window {
 		this.difficulty=difficulty;
 	}
 	
+	private void writeScore(int score) {
+		try {
+			
+			
+			File file = new File("resources/data/"+user+".txt");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String[] lines=new String[4];
+			for (int i =0;i<4;i++) {
+				lines[i]=br.readLine();
+			}
+			br.close();
+			lines[difficulty+1]=lines[difficulty+1]+score+",";
+			PrintWriter pw = new PrintWriter(new FileWriter(file));
+			for (int i =0;i<4;i++) {
+				pw.println(lines[i]);
+			}
+			pw.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 
 }

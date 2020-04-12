@@ -48,10 +48,15 @@ public class WindowManager {
 		if (state.equals("menu")) {
 			menuWindow.setUser(user);
 			menuWindow.setLastScore(score);
+			menuWindow.readData();
+		}
+		if (state.equals("game")) {
+			gameWindow.setDifficulty(difficulty);
+			gameWindow.setUser(user);
 		}
 		layout.show(container, state);
 		if (state.equals("game")) {
-			gameWindow.playGame(difficulty, state);
+			gameWindow.playGame();
 			
 		}
 	}
