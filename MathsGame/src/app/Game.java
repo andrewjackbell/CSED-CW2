@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +13,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Game extends Window {
@@ -22,15 +25,29 @@ public class Game extends Window {
 	private JLabel questionField;
 	private JTextField answerField;
 	private String currentAnswer;
-	private JLabel cheatField;
+	private JPanel centerPanel;
+	private JPanel leftPanel;
+	private JPanel rightPanel;
+	private JPanel southPanel;
+
+	private JPanel northPanel;
+
 	int score;
 	boolean nextQuestion;
 	
 	public Game(WindowManager manager) {
 		super(manager);
-		this.mainPanel.setLayout(new FlowLayout());
+		//this.mainPanel.setLayout(n);
+		Dimension d = new Dimension(200,500);
+		Dimension d1 = new Dimension(200,300);
+		southPanel= new JPanel(); southPanel.setPreferredSize(d);
+		leftPanel = new JPanel(); leftPanel.setPreferredSize(d);
+		rightPanel= new JPanel(); rightPanel.setPreferredSize(d);
+		northPanel= new JPanel(); northPanel.setPreferredSize(d1);
+		
+		
+		centerPanel = new JPanel(); centerPanel.setLayout(new BoxLayout(centerPanel,BoxLayout.Y_AXIS));
 		questionField = new JLabel("question here");
-		cheatField = new JLabel();
 		answerField = new JTextField(16);
 		answerField.addActionListener(new ActionListener(){
 			@Override
@@ -39,12 +56,17 @@ public class Game extends Window {
 				
 			}
 		});
-		mainPanel.add(cheatField,BorderLayout.CENTER);
-		mainPanel.add(questionField,BorderLayout.CENTER);
-		mainPanel.add(answerField,BorderLayout.CENTER);
+		
+		centerPanel.add(questionField);
+		centerPanel.add(answerField);
+		
+		mainPanel.add(centerPanel,BorderLayout.CENTER);
+		mainPanel.add(leftPanel,BorderLayout.WEST);
+		mainPanel.add(rightPanel,BorderLayout.EAST);
+		mainPanel.add(southPanel,BorderLayout.SOUTH);
+		mainPanel.add(northPanel,BorderLayout.NORTH);
+	
 	}
-	
-	
 	
 	public void playGame() {
 			score=0;
@@ -60,11 +82,8 @@ public class Game extends Window {
 						}
 					}
 				}
-				
-				
 				writeScore(score);
 				manager.setScore(score);
-				
 				manager.changeState("menu");
 		    }  
 		};
@@ -75,7 +94,7 @@ public class Game extends Window {
 	
 	public void checkAnswer() {
 		if (answerField.getText().equals(currentAnswer)) {
-			questionField.setText("correct answer");
+			answerField.setText("");
 			score++;
 			synchronized(this) {
 				nextQuestion=true;
@@ -91,7 +110,6 @@ public class Game extends Window {
 		String question = rand1+operator+rand2+" = ?";
 		questionField.setText(question);
 		currentAnswer=answer;
-		cheatField.setText("answer is "+ currentAnswer);
 		
 	}
 	private int operate(int rand1, int rand2, String operator) {
@@ -117,8 +135,6 @@ public class Game extends Window {
 	
 	private void writeScore(int score) {
 		try {
-			
-			
 			File file = new File("resources/data/"+user+".txt");
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String[] lines=new String[4];

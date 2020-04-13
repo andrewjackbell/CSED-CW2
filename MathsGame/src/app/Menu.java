@@ -208,33 +208,27 @@ public class Menu extends Window{
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			br.readLine();
-			for (int i=0;i<difficulty;i++) {
-				br.readLine();
-			}
-			String[] scores =br.readLine().split(",");
 			int max= 0;
 			int total=0;
 			int current=0;
-			for (int i=1;i<scores.length;i++) {
+			String[] scores;
+			for (int i=0;i<3;i++) {
+				scores =br.readLine().split(",");
 				
-				current = Integer.parseInt(scores[i]);
-				total+=current;
-				if (current>max) {
-					max=current;
+				for (int j=1;j<scores.length;j++) {
+					current = Integer.parseInt(scores[j]);
+					total+=current;
+					if (current>max) {
+						max=current;
+					}
 				}
-				
+				this.averages[i]=total/(scores.length-1);
+				this.bests[i]=max;
+				this.last[i]=current;
 			}
-			int average = total/(scores.length-1);
-			this.averages[difficulty]=average;
-			this.bests[difficulty]=max;
-			this.last[difficulty]=current;
+			
 			br.close();
 		}  
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
