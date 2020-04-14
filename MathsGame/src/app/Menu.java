@@ -203,16 +203,17 @@ public class Menu extends Window{
 	
 	public void readData() {
 		
-		//Reads file depending on difficulty and changes stats on the stats pane
+		//Reads file and updates arrays containing score data
 		String file = "resources/data/"+user+".txt";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			br.readLine();
-			int max= 0;
-			int total=0;
-			int current=0;
+			
 			String[] scores;
 			for (int i=0;i<3;i++) {
+				int max= 0;
+				int total=0;
+				int current=0;
 				scores =br.readLine().split(",");
 				
 				for (int j=1;j<scores.length;j++) {

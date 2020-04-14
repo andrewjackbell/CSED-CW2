@@ -102,8 +102,19 @@ public class Game extends Window {
 		}
 	}
 	private void generateQuestion() {
-		int rand1 = (int) (Math.random()*100);
-		int rand2 = (int) (Math.random()*100);
+		int multiplier;
+		if (difficulty==0) {
+			multiplier=12;
+		}
+		else if (difficulty==1) {
+			multiplier=24;
+		}
+		else {
+			multiplier=48;
+		}
+		
+		int rand1 = (int) (Math.random()*multiplier);
+		int rand2 = (int) (Math.random()*multiplier);
 		int i = (int) (Math.random()*4);
 		String operator = operators[i];
 		String answer = String.valueOf(operate(rand1,rand2,operator));
