@@ -192,6 +192,7 @@ public class Login extends Window{
 				if (file.createNewFile()) {
 					PrintWriter pw = new PrintWriter(file);
 					pw.println(hash(password));
+					pw.println(",");pw.println(",");pw.println(",");
 					pw.close();
 					alertText.setText("User Created");
 				}else {
