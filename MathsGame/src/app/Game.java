@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 public class Game extends Window {
 	private int difficulty;
 	private String user;
-	private String[] operators = {"+","-","/","*"};
+	private char[] operators = {'+','-','/','*'};
 	private JLabel questionField;
 	private JTextField answerField;
 	private String currentAnswer;
@@ -31,9 +31,10 @@ public class Game extends Window {
 	private JPanel southPanel;
 
 	private JPanel northPanel;
-
-	int score;
-	boolean nextQuestion;
+	private int multiplier;
+	private int operatormult;
+	private int score;
+	private boolean nextQuestion;
 	
 	public Game(WindowManager manager) {
 		super(manager);
@@ -68,9 +69,25 @@ public class Game extends Window {
 	
 	}
 	
-	public void playGame() {
+	public void playGame(int difficulty, String user) {
+			this.difficulty=difficulty;
+			this.user=user;
 			score=0;
 			nextQuestion=true;
+			
+			if (difficulty==0) {
+				multiplier=40;
+				operatormult=2;
+			}
+			else if (difficulty==1) {
+				multiplier=24;
+				operatormult=3;
+			}
+			else {
+				multiplier=60;
+				operatormult=4;
+			}
+			
 			Thread game = new Thread() {
 		    public void run() {
 				long time = System.currentTimeMillis();
@@ -101,49 +118,49 @@ public class Game extends Window {
 			}
 		}
 	}
+	
 	private void generateQuestion() {
-		int multiplier;
-		if (difficulty==0) {
-			multiplier=12;
-		}
-		else if (difficulty==1) {
-			multiplier=24;
-		}
-		else {
-			multiplier=48;
-		}
 		
-		int rand1 = (int) (Math.random()*multiplier);
-		int rand2 = (int) (Math.random()*multiplier);
-		int i = (int) (Math.random()*4);
-		String operator = operators[i];
-		String answer = String.valueOf(operate(rand1,rand2,operator));
-		String question = rand1+operator+rand2+" = ?";
+		int operand1=0;
+		int operand2=0;
+		int operatorint=0;
+		int answer=0;
+		char operator='+';
+		
+		while (answer==0) {
+			operand1 = (int) (Math.random()*multiplier);
+			operand2 = (int) (Math.random()*multiplier);
+			operatorint = (int) (Math.random()*4);
+			operator = operators[operatorint];
+			answer = operate(operand1,operand2,operator);
+		}
+		System.out.println(operand1);
+		System.out.println(operator);
+		System.out.println(operand2);
+		String question = operand1+operator+operand2+" = ?";
+		currentAnswer=String.valueOf(answer);
 		questionField.setText(question);
-		currentAnswer=answer;
-		
 	}
-	private int operate(int rand1, int rand2, String operator) {
-		if (operator.equals("+")) {
+	
+	private int operate(int rand1, int rand2, char operator) {
+		if (operator=='+') {
 			return rand1+rand2;
 		}
-		else if (operator.equals("-")) {
+		else if (operator=='-') {
 			return rand1-rand2;
 		}
-		else if (operator.equals("*")) {
+		else if (operator=='*') {
 			return rand1*rand2;
 		}
 		else {
-			return rand1/rand2;
+			if (rand1%rand2==0) {
+				return rand1/rand2;
+			}else {
+				return 0;
+			}
+			
 		}
 	}
-	public void setUser(String user) {
-		this.user=user;
-	}
-	public void setDifficulty(int difficulty) {
-		this.difficulty=difficulty;
-	}
-	
 	private void writeScore(int score) {
 		try {
 			File file = new File("resources/data/"+user+".txt");

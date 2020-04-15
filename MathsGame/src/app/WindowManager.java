@@ -50,13 +50,9 @@ public class WindowManager {
 			menuWindow.setLastScore(score);
 			menuWindow.readData();
 		}
-		if (state.equals("game")) {
-			gameWindow.setDifficulty(difficulty);
-			gameWindow.setUser(user);
-		}
 		layout.show(container, state);
 		if (state.equals("game")) {
-			gameWindow.playGame();
+			gameWindow.playGame(difficulty,user);
 			
 		}
 	}
