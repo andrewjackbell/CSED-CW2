@@ -2,7 +2,6 @@ package app;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -11,8 +10,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.RandomAccessFile;
-
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,7 +18,9 @@ import javax.swing.JTextField;
 public class Game extends Window {
 	private int difficulty;
 	private String user;
-	private char[] operators = {'+','-','/','*'};
+	private int[][][] ranges = {{{0,50},{0,35}},{{-50,100},{0,60},{0,12}},{{-50,100},{-12,20},{0,100}}};
+	private char[][] operators= {{'+','-'},{'+','-','*'},{'-','*','/'}};
+	private char[] currentOperators;
 	private JLabel questionField;
 	private JTextField answerField;
 	private String currentAnswer;
@@ -32,21 +31,17 @@ public class Game extends Window {
 
 	private JPanel northPanel;
 	private int multiplier;
-	private int operatormult;
 	private int score;
 	private boolean nextQuestion;
 	
 	public Game(WindowManager manager) {
 		super(manager);
-		//this.mainPanel.setLayout(n);
 		Dimension d = new Dimension(200,500);
 		Dimension d1 = new Dimension(200,300);
 		southPanel= new JPanel(); southPanel.setPreferredSize(d);
 		leftPanel = new JPanel(); leftPanel.setPreferredSize(d);
 		rightPanel= new JPanel(); rightPanel.setPreferredSize(d);
 		northPanel= new JPanel(); northPanel.setPreferredSize(d1);
-		
-		
 		centerPanel = new JPanel(); centerPanel.setLayout(new BoxLayout(centerPanel,BoxLayout.Y_AXIS));
 		questionField = new JLabel("question here");
 		answerField = new JTextField(16);
@@ -54,7 +49,6 @@ public class Game extends Window {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				checkAnswer();
-				
 			}
 		});
 		
@@ -74,19 +68,7 @@ public class Game extends Window {
 			this.user=user;
 			score=0;
 			nextQuestion=true;
-			
-			if (difficulty==0) {
-				multiplier=40;
-				operatormult=2;
-			}
-			else if (difficulty==1) {
-				multiplier=24;
-				operatormult=3;
-			}
-			else {
-				multiplier=60;
-				operatormult=4;
-			}
+			multiplier=15;
 			
 			Thread game = new Thread() {
 		    public void run() {
@@ -95,6 +77,7 @@ public class Game extends Window {
 					synchronized(this) {
 						if (nextQuestion==true) {
 							nextQuestion=false;
+							answerField.setText("");
 							generateQuestion();
 						}
 					}
@@ -111,7 +94,6 @@ public class Game extends Window {
 	
 	public void checkAnswer() {
 		if (answerField.getText().equals(currentAnswer)) {
-			answerField.setText("");
 			score++;
 			synchronized(this) {
 				nextQuestion=true;
@@ -120,24 +102,23 @@ public class Game extends Window {
 	}
 	
 	private void generateQuestion() {
-		
+		int min=0;
+		int max=0;
 		int operand1=0;
 		int operand2=0;
 		int operatorint=0;
 		int answer=0;
-		char operator='+';
-		
+		operatorint = (int) (Math.random()*operators[difficulty].length);
+		char operator = operators[difficulty][operatorint];
+		min = ranges[difficulty][operatorint][0];
+		max = ranges[difficulty][operatorint][1];
 		while (answer==0) {
-			operand1 = (int) (Math.random()*multiplier);
-			operand2 = (int) (Math.random()*multiplier);
-			operatorint = (int) (Math.random()*4);
-			operator = operators[operatorint];
+			operand1 = randInt(min,max);
+			operand2 = randInt(min,max);
 			answer = operate(operand1,operand2,operator);
 		}
-		System.out.println(operand1);
-		System.out.println(operator);
-		System.out.println(operand2);
-		String question = operand1+operator+operand2+" = ?";
+		System.out.println(answer);
+		String question = operand1+String.valueOf(operator)+operand2+" = ?";
 		currentAnswer=String.valueOf(answer);
 		questionField.setText(question);
 	}
@@ -153,12 +134,16 @@ public class Game extends Window {
 			return rand1*rand2;
 		}
 		else {
-			if (rand1%rand2==0) {
-				return rand1/rand2;
+			if (rand2!=0) {
+				if (rand1%rand2==0) {
+					return rand1/rand2;
+				}else {
+					return 0;
+				}
+			
 			}else {
 				return 0;
 			}
-			
 		}
 	}
 	private void writeScore(int score) {
@@ -181,6 +166,9 @@ public class Game extends Window {
 			e.printStackTrace();
 		}
 		
+	}
+	private int randInt(int min, int max) {
+		return (int) (Math.random()*(max-min))+min;
 	}
 	
 
