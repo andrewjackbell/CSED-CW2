@@ -20,7 +20,6 @@ public class Game extends Window {
 	private String user;
 	private int[][][] ranges = {{{0,50},{0,35}},{{-50,100},{0,60},{0,12}},{{-50,100},{-12,20},{0,100}}};
 	private char[][] operators= {{'+','-'},{'+','-','*'},{'-','*','/'}};
-	private char[] currentOperators;
 	private JLabel questionField;
 	private JTextField answerField;
 	private String currentAnswer;
@@ -28,9 +27,7 @@ public class Game extends Window {
 	private JPanel leftPanel;
 	private JPanel rightPanel;
 	private JPanel southPanel;
-
 	private JPanel northPanel;
-	private int multiplier;
 	private int score;
 	private boolean nextQuestion;
 	
