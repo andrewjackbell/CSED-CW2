@@ -28,7 +28,8 @@ public class Game extends Window {
 	private JPanel rightPanel;
 	private JPanel southPanel;
 	private JPanel northPanel;
-	private int score;
+	private int correctAns;
+	private int incorrectAns;
 	private boolean nextQuestion;
 	
 	public Game(WindowManager manager) {
@@ -63,9 +64,9 @@ public class Game extends Window {
 	public void playGame(int difficulty, String user) {
 			this.difficulty=difficulty;
 			this.user=user;
-			score=0;
+			correctAns=0;
+			incorrectAns=0;
 			nextQuestion=true;
-			multiplier=15;
 			
 			Thread game = new Thread() {
 		    public void run() {
@@ -79,9 +80,10 @@ public class Game extends Window {
 						}
 					}
 				}
+				int score = correctAns-incorrectAns;
 				writeScore(score);
-				manager.setScore(score);
-				manager.changeState("menu");
+				manager.setScoreValues(correctAns,incorrectAns);
+				manager.changeState("summary");
 		    }  
 		};
 		game.start();
@@ -91,10 +93,13 @@ public class Game extends Window {
 	
 	public void checkAnswer() {
 		if (answerField.getText().equals(currentAnswer)) {
-			score++;
-			synchronized(this) {
-				nextQuestion=true;
-			}
+			correctAns++;
+			
+		}else {
+			incorrectAns++;
+		}
+		synchronized(this) {
+			nextQuestion=true;
 		}
 	}
 	
@@ -144,6 +149,7 @@ public class Game extends Window {
 		}
 	}
 	private void writeScore(int score) {
+
 		try {
 			File file = new File("resources/data/"+user+".txt");
 			BufferedReader br = new BufferedReader(new FileReader(file));

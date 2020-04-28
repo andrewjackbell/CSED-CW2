@@ -1,27 +1,17 @@
 package app;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.swing.*;
 
 public class Menu extends Window{
-	
-	Font  titleFont  = new Font("Rockwell", Font.PLAIN, 40);      
-	Font medium = new Font(Font.SERIF,Font.PLAIN,26);
-	Font large = new Font(Font.SERIF,Font.PLAIN,35);
+
 	
 	private String user;
 	private GButton[] diffButtons;
@@ -78,12 +68,12 @@ public class Menu extends Window{
 	    
 	    
 		//Text Labels
-		title=new JLabel("MAIN MENU"); title.setFont(titleFont); 
-		infoTitle = new JLabel("STATS"); infoTitle.setFont(large);
-		bestText= new JLabel("Select Difficulty"); bestText.setFont(medium);
-		avText= new JLabel(""); avText.setFont(medium);
-		lastText = new JLabel(""); lastText.setFont(medium);
-		playText=new JLabel("PLAY"); playText.setFont(large); playText.setVisible(false);
+		title=new JLabel("MAIN MENU"); title.setFont(GFonts.titleFont); 
+		infoTitle = new JLabel("STATS"); infoTitle.setFont(GFonts.large);
+		bestText= new JLabel("Select Difficulty"); bestText.setFont(GFonts.medium);
+		avText= new JLabel(""); avText.setFont(GFonts.medium);
+		lastText = new JLabel(""); lastText.setFont(GFonts.medium);
+		playText=new JLabel("PLAY"); playText.setFont(GFonts.large); playText.setVisible(false);
 		
 		//Image Icons
 		hoverGear = new ImageIcon("resources/hoverGear.png");
@@ -94,22 +84,21 @@ public class Menu extends Window{
 		hoverCircleArrow = new ImageIcon("resources/hoverCircleArrow.png");
 				
 		//Buttons
-		logoutButton=new GButton("Logout",Color.cyan);  logoutButton.setFont(medium);logoutButton.setPreferredSize(new Dimension(110, 12));
-		logoutButton.addMouseListener(new ButtonListener(this));
-		settingsButton = new GButton(defaultGear);
-		settingsButton.addMouseListener(new ButtonListener(this));	
-		playButton = new GButton(defaultArrow); 
-		playButton.addMouseListener(new ButtonListener(this));
+		logoutButton=new GButton("Logout",Color.cyan,this);  logoutButton.setFont(GFonts.medium);logoutButton.setPreferredSize(new Dimension(110, 12));
+	
+		settingsButton = new GButton(defaultGear,this);
+
+		playButton = new GButton(defaultArrow,this); 
+
 		playButton.setVisible(false);
-		refreshButton = new GButton(defaultCircleArrow);
-		refreshButton.addMouseListener(new ButtonListener(this));
+		refreshButton = new GButton(defaultCircleArrow,this);
+
 		
 		diffButtons = new GButton[3];
-		diffButtons[0]=new GButton("EASY",Color.GREEN); 
-	    diffButtons[1]=new GButton("MEDIUM", Color.ORANGE); 
-	    diffButtons[2]=new GButton("HARD",Color.RED);
+		diffButtons[0]=new GButton("EASY",Color.GREEN,this); 
+	    diffButtons[1]=new GButton("MEDIUM", Color.ORANGE,this); 
+	    diffButtons[2]=new GButton("HARD",Color.RED,this);
 	    for (int i=0;i<3;i++) {
-	    	diffButtons[i].addMouseListener(new ButtonListener(this));
 			leftPanel.add(Box.createRigidArea(new Dimension(0,70)));
 			leftPanel.add(diffButtons[i]);
 	    }

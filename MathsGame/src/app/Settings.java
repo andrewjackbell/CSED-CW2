@@ -14,8 +14,7 @@ public class Settings extends Window{
 	public Settings(WindowManager manager) {
 		super(manager);
 		mainPanel.setBackground(Color.GREEN);
-		backButton = new GButton("Back",Color.CYAN);
-		backButton.addMouseListener(new ButtonListener(this));
+		backButton = new GButton("Back",Color.CYAN,this);
 		mainPanel.add(backButton);
 	}
 	@Override

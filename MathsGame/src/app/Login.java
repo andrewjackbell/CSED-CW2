@@ -3,7 +3,6 @@ package app;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -12,16 +11,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -39,7 +35,7 @@ public class Login extends Window{
 	private JButton loginButton;
 	
 	private JLabel alertText;
-	Font medium = new Font(Font.SERIF,Font.PLAIN,26);
+	
 	
 
 	
@@ -100,12 +96,10 @@ public class Login extends Window{
 	
 			});
 		passField.setPreferredSize(new Dimension(0,50));
-		signUpButton = new GButton("Sign Up",Color.CYAN);
-		signUpButton.addMouseListener(new ButtonListener(this));
-		loginButton = new GButton("Login",Color.MAGENTA);
-		loginButton.addMouseListener(new ButtonListener(this));
+		signUpButton = new GButton("Sign Up",Color.CYAN,this);
+		loginButton = new GButton("Login",Color.MAGENTA,this);
 		alertText = new JLabel("Welcome to quick maffs. Please login or sign up");
-		alertText.setFont(medium);
+		alertText.setFont(GFonts.medium);
 		alertText.setPreferredSize(new Dimension(100,120));
 		centerPanel.add(blankPanel);
 		centerPanel.add(blankPanel1);
@@ -172,8 +166,6 @@ public class Login extends Window{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		
-
 	}
 	
 	public void createUser() {
