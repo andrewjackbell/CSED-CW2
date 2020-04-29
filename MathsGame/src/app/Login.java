@@ -22,7 +22,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
+/**
+ * Login window class
+ * Creates an object which displays the login window for the game
+ *
+ */
 public class Login extends Window{
 	private JPanel centerPanel;
 	private JPanel southPanel;
@@ -31,21 +35,25 @@ public class Login extends Window{
 	
 	private JTextField nameField;
 	private JPasswordField passField;
-	private JButton signUpButton;
-	private JButton loginButton;
-	
 	private JLabel alertText;
 	
+	private GButton signUpButton;
+	private GButton loginButton;
 	
-
-	
-	
+	/**
+	 * 
+	 * Creates the login window object to be displayed. It instantiates the components and adds them to the main panel
+	 * @param manager: the WindowManager of this window, used to call the method to switch from this screen
+	 */
 	public Login(WindowManager manager) {
+		
 		super(manager);
+		
 		centerPanel = new JPanel(); centerPanel.setLayout(new GridLayout(3,2,10,10));centerPanel.setSize(new Dimension(100,100));
 		southPanel=new JPanel(); southPanel.setPreferredSize(new Dimension(100,500));
 		eastPanel = new JPanel(); eastPanel.setPreferredSize(new Dimension(300,100));
 		westPanel = new JPanel(); westPanel.setPreferredSize(new Dimension(300,100));
+		
 		JPanel blankPanel = new JPanel();
 		JPanel blankPanel1 = new JPanel();
 		JPanel blankPanel2 = new JPanel();
@@ -54,10 +62,10 @@ public class Login extends Window{
 		nameField= new JTextField("Username",16);
 		nameField.setPreferredSize(new Dimension(0,10));
 		nameField.setForeground(Color.GRAY);
-		nameField.addFocusListener(new FocusListener() {
-
-
+		
+		nameField.addFocusListener(new FocusListener() { //Creates new thread to check if focus is gained or lost on the username field
 			public void focusGained(FocusEvent e) {
+				//Removes the label from the username field when clicked on
 				if (nameField.getForeground().equals(Color.GRAY))
 			    nameField.setText("");
 			    nameField.setForeground(Color.BLACK);
@@ -65,6 +73,7 @@ public class Login extends Window{
 	
 	
 			public void focusLost(FocusEvent e) {
+				//Adds the label back to the username field if it is empty and clicked off of
 				if (nameField.getText().equals("")) {
 					resetUsername();
 				}
@@ -75,9 +84,10 @@ public class Login extends Window{
 		passField = new JPasswordField("Password",16);
 		passField.setForeground(Color.GRAY);
 		passField.setEchoChar((char)0);
+		passField.setPreferredSize(new Dimension(0,50));
 		passField.addFocusListener(new FocusListener() {
 
-
+			//Removes the label from the password field when clicked on
 			public void focusGained(FocusEvent e) {
 				if (passField.getForeground().equals(Color.GRAY)) {
 					passField.setEchoChar('•');
@@ -86,7 +96,7 @@ public class Login extends Window{
 				}
 			}
 	
-	
+			//Removes the label from the password field when clicked on
 			public void focusLost(FocusEvent e) {
 				if (passField.getText().equals("")) {
 					resetPassword();
@@ -95,12 +105,14 @@ public class Login extends Window{
 			}
 	
 			});
-		passField.setPreferredSize(new Dimension(0,50));
-		signUpButton = new GButton("Sign Up",Color.CYAN,this);
-		loginButton = new GButton("Login",Color.MAGENTA,this);
+		
+		
+		signUpButton = new GButton("  Sign Up  ",Color.CYAN,this);
+		loginButton = new GButton("  Login  ",Color.GREEN,this);
 		alertText = new JLabel("Welcome to quick maffs. Please login or sign up");
-		alertText.setFont(GFonts.medium);
+		alertText.setFont(GFonts.mediumFont);
 		alertText.setPreferredSize(new Dimension(100,120));
+		
 		centerPanel.add(blankPanel);
 		centerPanel.add(blankPanel1);
 		centerPanel.add(blankPanel2);
@@ -109,7 +121,6 @@ public class Login extends Window{
 		centerPanel.add(eastPanel);
 		centerPanel.add(passField);
 		centerPanel.add(eastPanel);
-		 
 		southPanel.add(signUpButton);
 		southPanel.add(loginButton);
 
@@ -124,6 +135,13 @@ public class Login extends Window{
 		
 	}
 	
+	/**
+	 * 
+	 * Generates a hashed string from a given char array in hexadecimal
+	 * 
+	 * @param arr: char array to be hashed
+	 * @return The string containing the hash 
+	 */
 	public String hash(char[] arr) {
 		String original = Arrays.toString(arr);
 		try {
@@ -142,7 +160,11 @@ public class Login extends Window{
 		
 	}
 	
-	
+	/**
+	 * 
+	 * Checks the values in the 
+	 * 
+	 */
 	public void authenticate() {
 		String username = nameField.getText();
 		char[] password = passField.getPassword();
@@ -203,6 +225,24 @@ public class Login extends Window{
 		}
 		if (e.getSource()==loginButton) {
 			authenticate();
+		}
+	}
+	@Override
+	public void mouseEnter(MouseEvent e) {
+		if (e.getSource()==signUpButton) {
+			signUpButton.changeBrightness(true);
+		}
+		if (e.getSource()==loginButton) {
+			loginButton.changeBrightness(true);
+		}
+	}
+	@Override
+	public void mouseExit(MouseEvent e) {
+		if (e.getSource()==signUpButton) {
+			signUpButton.changeBrightness(false);
+		}
+		if (e.getSource()==loginButton) {
+			loginButton.changeBrightness(false);
 		}
 	}
 	
