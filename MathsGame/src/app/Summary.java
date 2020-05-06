@@ -24,8 +24,8 @@ public class Summary extends Window{
 	private JLabel correctText;
 	private JLabel incorrectText;
 	
-	public Summary(WindowManager manager) {
-		super(manager);
+	public Summary(WindowManager manager,Dimension frameSize) {
+		super(manager,frameSize);
 		Dimension d = new Dimension(300,250);
 		
 		nPanel = new JPanel(); nPanel.setPreferredSize(d);

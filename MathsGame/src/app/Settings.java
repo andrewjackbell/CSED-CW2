@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
@@ -11,8 +12,8 @@ public class Settings extends Window{
 	
 	JButton backButton;
 	
-	public Settings(WindowManager manager) {
-		super(manager);
+	public Settings(WindowManager manager,Dimension frameSize) {
+		super(manager,frameSize);
 		mainPanel.setBackground(Color.GREEN);
 		backButton = new GButton("Back",Color.CYAN,this);
 		mainPanel.add(backButton);

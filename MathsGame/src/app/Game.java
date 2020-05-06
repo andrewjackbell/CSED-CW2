@@ -32,8 +32,8 @@ public class Game extends Window {
 	private int incorrectAns;
 	private boolean nextQuestion;
 	
-	public Game(WindowManager manager) {
-		super(manager);
+	public Game(WindowManager manager,Dimension frameSize) {
+		super(manager,frameSize);
 		Dimension d = new Dimension(200,500);
 		Dimension d1 = new Dimension(200,300);
 		southPanel= new JPanel(); southPanel.setPreferredSize(d);

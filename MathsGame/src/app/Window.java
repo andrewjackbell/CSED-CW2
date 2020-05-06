@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
@@ -8,9 +9,11 @@ import javax.swing.JPanel;
 public abstract class Window {
 	protected JPanel mainPanel;
 	protected WindowManager manager;
+	private Dimension frameSize;
 	
-	public Window(WindowManager manager) {
+	public Window(WindowManager manager,Dimension frameSize) {
 		this.manager=manager;
+		this.frameSize=frameSize;
 		mainPanel = new JPanel(new BorderLayout());
 	}
 	/**

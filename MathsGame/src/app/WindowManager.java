@@ -1,12 +1,11 @@
 package app;
 
 import java.awt.CardLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.JButton;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 
 /**
  * 
@@ -39,14 +38,16 @@ public class WindowManager {
 	 */
 	public WindowManager() {
 		frame = new JFrame("Quick Maffs");
-		frame.setSize(900,900);
+		frame.setResizable(false);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setSize(screenSize);
 		container = new JPanel(layout);
 		
-		loginWindow = new Login(this);
-		menuWindow = new Menu(this);
-		settingsWindow = new Settings(this);
-		gameWindow = new Game(this);
-		summaryWindow = new Summary(this);
+		loginWindow = new Login(this,screenSize);
+		menuWindow = new Menu(this,screenSize);
+		settingsWindow = new Settings(this,screenSize);
+		gameWindow = new Game(this,screenSize);
+		summaryWindow = new Summary(this,screenSize);
 		
 		container.add(loginWindow.getMainPanel(),"login");
 		container.add(menuWindow.getMainPanel(),"menu");

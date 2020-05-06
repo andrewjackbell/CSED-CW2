@@ -55,12 +55,13 @@ public class Menu extends Window{
 	 * Creates the menu window object to be displayed. It instantiates the components and adds them to the main panel
 	 * @param manager: the WindowManager of this window, used to call the method to switch from this screen
 	 */
-	public Menu(WindowManager manager){
-		super(manager);
+	public Menu(WindowManager manager,Dimension frameSize){
+		super(manager,frameSize);
 		
 		bests=new int[3];
 		averages=new int[3];
 		last = new int[3];
+		
 		
 		//Setting up mainPanel
 		mainPanel.setBackground(Color.BLUE);
@@ -76,7 +77,7 @@ public class Menu extends Window{
 	     infoPanel.setBackground(Color.LIGHT_GRAY); infoPanel.setPreferredSize(new Dimension(500,50));	     
 	     leftInfo = new JPanel(); leftInfo.setLayout(new BoxLayout(leftInfo,BoxLayout.Y_AXIS));
 		 rightInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	    
+		 
 	    
 		//Text Labels
 		title=new JLabel("MAIN MENU"); title.setFont(GFonts.titleFont); 
