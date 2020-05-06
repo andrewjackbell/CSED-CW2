@@ -37,7 +37,7 @@ public class Summary extends Window{
 		scoreText = new JLabel("Score: "); scoreText.setFont(GFonts.mediumFont);
 		correctText= new JLabel("Correct Answers: ");correctText.setFont(GFonts.mediumFont);
 		incorrectText= new JLabel("Incorrect Answers: ");incorrectText.setFont(GFonts.mediumFont);
-		titleText= new JLabel("Game Sumarry");titleText.setFont(GFonts.titleFont);
+		titleText= new JLabel("Game Summary");titleText.setFont(GFonts.titleFont);
 		centerPanel.add(titleText);
 		centerPanel.add(Box.createRigidArea(new Dimension(0,30)));
 		centerPanel.add(scoreText);
