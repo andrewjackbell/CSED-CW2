@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -26,18 +27,16 @@ import javax.swing.JTextField;
  * Login window class
  * Creates an object which displays the login window for the game
  *
+ *@author Andrew
  */
 public class Login extends Window{
 	private JPanel centerPanel;
 	private JPanel southPanel;
 	private JPanel eastPanel;
 	private JPanel westPanel;
-	private JPanel[] blanks;
-	
 	private JTextField nameField;
 	private JPasswordField passField;
 	private JLabel alertText;
-	
 	private GButton signUpButton;
 	private GButton loginButton;
 	private JPanel topPanel; 
@@ -46,24 +45,22 @@ public class Login extends Window{
 	 * 
 	 * Creates the login window object to be displayed. It instantiates the components and adds them to the main panel
 	 * @param manager: the WindowManager of this window, used to call the method to switch from this screen
+	 * @param frameSize: the size of the window
 	 */
 	public Login(WindowManager manager,Dimension frameSize) {
 		
 		super(manager,frameSize);
 		Dimension x = new Dimension((int)(frameSize.getWidth()/2.5),0);
 		
+		//Panels
 		topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));  topPanel.setPreferredSize(new Dimension(0,(int)(frameSize.getHeight()/4)));
 		centerPanel = new JPanel(); centerPanel.setLayout(new GridLayout(3,4,10,10)); 
-
 		southPanel=new JPanel(); southPanel.setPreferredSize(new Dimension(0,(int)(frameSize.getHeight()/1.8)));
 		eastPanel = new JPanel(); eastPanel.setPreferredSize(x);
 		westPanel = new JPanel(); westPanel.setPreferredSize(x);
 		
-		blanks=new JPanel[4];
-		for (int i=0;i<4;i++) {
-			blanks[i]=new JPanel();
-		}
-
+		
+		//Username field
 		nameField= new JTextField("Username",16);
 		nameField.setForeground(Color.GRAY);
 		
@@ -84,7 +81,7 @@ public class Login extends Window{
 			}
 	
 			});      
-		
+		//Password field
 		passField = new JPasswordField("Password",16);
 		passField.setForeground(Color.GRAY);
 		passField.setEchoChar((char)0);
@@ -102,7 +99,7 @@ public class Login extends Window{
 	
 			//Removes the label from the password field when clicked on
 			public void focusLost(FocusEvent e) {
-				if (passField.getText().equals("")) {
+				if (passField.getPassword().length==0) {
 					resetPassword();
 				}
 				
@@ -110,16 +107,16 @@ public class Login extends Window{
 	
 			});
 		
-		
+		//Buttons
 		signUpButton = new GButton("  Sign Up  ",Color.CYAN,this);
 		loginButton = new GButton("  Login  ",Color.GREEN,this);
+		
+		//Labels
 		alertText = new JLabel("Welcome to quick maffs. Please login or sign up");
 		alertText.setFont(GFonts.mediumFont);
 
 		
-		for (int i =0;i<4;i++) {
-			centerPanel.add(blanks[i]);
-		}
+		//Adding components to respective panels
 		centerPanel.add(nameField);
 		centerPanel.add(eastPanel);
 		centerPanel.add(passField);
@@ -128,9 +125,9 @@ public class Login extends Window{
 		southPanel.add(loginButton);
 		topPanel.add(alertText);
 		
+		//Adding panels to main panel
 		mainPanel.add(westPanel,BorderLayout.WEST);
 		mainPanel.add(eastPanel,BorderLayout.EAST);
-
 		mainPanel.add(southPanel,BorderLayout.SOUTH);
 		mainPanel.add(topPanel,BorderLayout.PAGE_START);
 		mainPanel.add(centerPanel,BorderLayout.CENTER);
@@ -165,51 +162,59 @@ public class Login extends Window{
 	
 	/**
 	 * 
-	 * Checks the values in the 
+	 * Checks the values in the fields and changes to the menu screen if they are correct
 	 * 
 	 */
 	public void authenticate() {
+		
+		//Retrieving values from fields
 		String username = nameField.getText();
 		char[] password = passField.getPassword();
 		File file = new File("resources/data/"+username+".txt");
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(file));
 				
-				if (br.readLine().equals(hash(password))) {
+				if (br.readLine().equals(hash(password))) { //Compares hash of password given with the hash stored in the text file
 					br.close();
-					resetUsername();
+					//Empties username and password fields
+					resetUsername();   
 					resetPassword();
 					manager.setUser(username);
-					manager.changeState("menu");
+					manager.changeState("menu"); //Switches to menu window
 				} else {
 					alertText.setText("Incorrect Password");
 					br.close();
 				}
 				
-			} catch (FileNotFoundException e) {
+			} catch (FileNotFoundException e) { //In the case where the file named after the username is not found, the user has not been created.
 				alertText.setText("Username not found");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 	}
 	
+	/**
+	 * Creates a user file using the credentials given 
+	 */
 	public void createUser() {
+		//Retrieving values from fields
 		String username = nameField.getText();
 		char[] password = passField.getPassword();
 		
 		
-		
+		//Length check validation
 		if (username.length() < 2||username.equals("Username")) {
 			alertText.setText("Username must be at least 2 characters");
 		} else if (password.length < 6 || password.length > 16||String.valueOf(password).equals("Password")) {
 			alertText.setText("Password must be between 6 and 16 characters");
-		} else {		
-			File file = new File("resources/data/"+username+".txt");
+		} else {
+			
+			File file = new File("resources/data/"+username+".txt"); //Creates a new file object with the username as the filename
 			try {
-				if (file.createNewFile()) {
+				if (file.createNewFile()) { //Checks if file already exists
 					PrintWriter pw = new PrintWriter(file);
-					pw.println(hash(password));
-					pw.println(",");pw.println(",");pw.println(",");
+					pw.println(hash(password));//Writes the hash of the password on the first line
+					pw.println(",");pw.println(",");pw.println(","); //Pads the next 3 lines with commas to show where scores are written
 					pw.close();
 					alertText.setText("User Created");
 					manager.setUser(username);
@@ -226,14 +231,14 @@ public class Login extends Window{
 	@Override
 	public void mousePress(MouseEvent e) {
 		if (e.getSource()==signUpButton) {
-			createUser();
+			createUser(); 
 		}
 		if (e.getSource()==loginButton) {
 			authenticate();
 		}
 	}
 	@Override
-	public void mouseEnter(MouseEvent e) {
+	public void mouseEnter(MouseEvent e) { 
 		if (e.getSource()==signUpButton) {
 			signUpButton.changeBrightness(true);
 		}
@@ -251,13 +256,18 @@ public class Login extends Window{
 		}
 	}
 	
-	
+	/**
+	 * Removes any user input from password field and adds label
+	 */
 	private void resetPassword() {
-		passField.setEchoChar((char)0);
 		passField.setText("Password");
+		passField.setEchoChar((char)0);//Shows password text
 		passField.setForeground(Color.GRAY);
 		
 	}
+	/**
+	 * Removes any user input from username field and adds label
+	 */
 	private void resetUsername() {
 		nameField.setText("Username");
 		nameField.setForeground(Color.GRAY);

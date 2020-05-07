@@ -8,11 +8,18 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import javax.swing.*;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * Menu window class
  * Creates an object which displays the menu for the game
+ * 
+ * @author Andrew
  */
 public class Menu extends Window{
 
@@ -54,6 +61,7 @@ public class Menu extends Window{
 	 * 
 	 * Creates the menu window object to be displayed. It instantiates the components and adds them to the main panel
 	 * @param manager: the WindowManager of this window, used to call the method to switch from this screen
+	 * @param frameSize: the size of the window
 	 */
 	public Menu(WindowManager manager,Dimension frameSize){
 		super(manager,frameSize);
@@ -101,8 +109,6 @@ public class Menu extends Window{
 		playButton = new GButton(defaultArrow,this); 
 		playButton.setVisible(false);
 		refreshButton = new GButton(defaultCircleArrow,this);
-
-		
 		diffButtons = new GButton[3];
 		diffButtons[0]=new GButton("EASY",Color.GREEN,this); 
 	    diffButtons[1]=new GButton("MEDIUM", Color.ORANGE,this); 
@@ -264,7 +270,7 @@ public class Menu extends Window{
 	}
 	/**
 	 * Updates the memory value of the most recent score. This is called by the game class so that the menu doesn't have to read the memory each time a game is played.
-	 * @param score
+	 * @param score: the score value to be updated in the array
 	 */
 	public void setLastScore(int score) {
 		this.last[difficulty]=score;

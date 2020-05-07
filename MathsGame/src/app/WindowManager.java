@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -13,8 +14,10 @@ import javax.swing.JPanel;
  * This class creates an object containing all the windows needed for the game and switches between them in cardLayout when the user navigates through them. 
  * Contains methods necessary to pass information between windows. 
  *
+ *@author Andrew
  */
 public class WindowManager {
+	
 	private JFrame frame;
 	private JPanel container;
 	private CardLayout layout = new CardLayout();
@@ -61,6 +64,7 @@ public class WindowManager {
 		layout.show(container, "login");
 	}
 	
+	
 	public static void main(String[] args) {
 		new WindowManager();
 	}
@@ -87,13 +91,10 @@ public class WindowManager {
 			
 		}
 	}
-	
-	public void setUser(String user) {
-		this.user=user;
-	}
-	public void setDifficulty(int difficulty) {
-		this.difficulty=difficulty;
-	}
+	/**
+	 * Changes colour of all of the window backgrounds in the game
+	 * @param colour: the colour to set the game window backgrounds to
+	 */
 	public void setColour(Color colour) {
 		frame.setBackground(colour);
 		loginWindow.setColour(colour);
@@ -101,9 +102,14 @@ public class WindowManager {
 		settingsWindow.setColour(colour);
 		menuWindow.setColour(colour);
 	}
-	public void setBrightness(int value) {
-		
+	
+	public void setUser(String user) {
+		this.user=user;
 	}
+	public void setDifficulty(int difficulty) {
+		this.difficulty=difficulty;
+	}
+
 	public void setScoreValues(int correct,int incorrect) {
 		this.score=correct-incorrect;
 		this.correctAns=correct;
