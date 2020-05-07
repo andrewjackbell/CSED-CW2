@@ -1,6 +1,9 @@
 package app;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 
@@ -16,10 +19,34 @@ public abstract class Window {
 		this.frameSize=frameSize;
 		mainPanel = new JPanel(new BorderLayout());
 	}
-	/**
-	 * 
-	 * @return the main panel of the window to be used by the window manager
-	 */
+
+	public void setColour(Color colour) {
+		colourComponents(mainPanel,colour);
+		
+	}
+	
+	private void colourComponents(Component c,Color colour) {
+		if (c instanceof JPanel) {
+			c.setBackground(colour);
+		}
+		
+		if (c instanceof Container) {
+			Component[] cs=((Container) c).getComponents();
+			if (cs.length>0) {
+				for (int j=0;j<cs.length;j++) {
+					colourComponents(cs[j],colour);
+				}
+			}
+			else {
+				
+				
+			}
+		}else {
+			
+		}
+		
+	}
+	
 	public JPanel getMainPanel() {
 		return mainPanel;
 	}
@@ -47,4 +74,5 @@ public abstract class Window {
 	 */
 	public void mouseExit(MouseEvent e) {	
 	}
+	
 }

@@ -53,7 +53,7 @@ public class Login extends Window{
 		Dimension x = new Dimension((int)(frameSize.getWidth()/2.5),0);
 		
 		topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));  topPanel.setPreferredSize(new Dimension(0,(int)(frameSize.getHeight()/4)));
-		centerPanel = new JPanel(); centerPanel.setLayout(new GridLayout(3,2,10,10)); centerPanel.setSize(new Dimension(10,10));
+		centerPanel = new JPanel(); centerPanel.setLayout(new GridLayout(3,4,10,10)); 
 
 		southPanel=new JPanel(); southPanel.setPreferredSize(new Dimension(0,(int)(frameSize.getHeight()/1.8)));
 		eastPanel = new JPanel(); eastPanel.setPreferredSize(x);

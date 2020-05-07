@@ -258,7 +258,7 @@ public class Menu extends Window{
 	}
 	
 	
-
+	
 	public void setUser(String user) {
 		this.user=user;
 	}

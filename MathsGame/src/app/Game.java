@@ -2,6 +2,7 @@ package app;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -31,18 +32,22 @@ public class Game extends Window {
 	private int correctAns;
 	private int incorrectAns;
 	private boolean nextQuestion;
+	private JLabel timer;
+	private JPanel topPanel;
 	
 	public Game(WindowManager manager,Dimension frameSize) {
 		super(manager,frameSize);
-		Dimension d = new Dimension(200,500);
-		Dimension d1 = new Dimension(200,300);
+		Dimension d = new Dimension((int)frameSize.getWidth()/3,(int)frameSize.getHeight()/2);
+		Dimension d1 = new Dimension((int)frameSize.getWidth()/3,(int)frameSize.getHeight()/3);
 		southPanel= new JPanel(); southPanel.setPreferredSize(d);
 		leftPanel = new JPanel(); leftPanel.setPreferredSize(d);
 		rightPanel= new JPanel(); rightPanel.setPreferredSize(d);
-		northPanel= new JPanel(); northPanel.setPreferredSize(d1);
 		centerPanel = new JPanel(); centerPanel.setLayout(new BoxLayout(centerPanel,BoxLayout.Y_AXIS));
+		topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); topPanel.setPreferredSize(d1);
+		timer= new JLabel("60"); timer.setFont(GFonts.titleFont); 
 		questionField = new JLabel("question here");
 		answerField = new JTextField(16);
+		
 		answerField.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -52,12 +57,13 @@ public class Game extends Window {
 		
 		centerPanel.add(questionField);
 		centerPanel.add(answerField);
+		topPanel.add(timer);
 		
 		mainPanel.add(centerPanel,BorderLayout.CENTER);
 		mainPanel.add(leftPanel,BorderLayout.WEST);
 		mainPanel.add(rightPanel,BorderLayout.EAST);
 		mainPanel.add(southPanel,BorderLayout.SOUTH);
-		mainPanel.add(northPanel,BorderLayout.NORTH);
+		mainPanel.add(topPanel,BorderLayout.PAGE_START);
 	
 	}
 	
@@ -71,7 +77,12 @@ public class Game extends Window {
 			Thread game = new Thread() {
 		    public void run() {
 				long time = System.currentTimeMillis();
-				while (System.currentTimeMillis()<time+10000) {
+				int seconds = 0;
+				while (seconds<60) {
+					if (System.currentTimeMillis()>time+seconds*1000+1) {
+						seconds++;
+						decrementTimer();
+					}
 					synchronized(this) {
 						if (nextQuestion==true) {
 							nextQuestion=false;
@@ -89,6 +100,12 @@ public class Game extends Window {
 		game.start();
 		
 
+	}
+	
+	public void decrementTimer() {
+		int time = Integer.valueOf(timer.getText());
+		time--;
+		timer.setText(String.valueOf(time));
 	}
 	
 	public void checkAnswer() {

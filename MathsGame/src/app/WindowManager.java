@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
@@ -93,7 +94,16 @@ public class WindowManager {
 	public void setDifficulty(int difficulty) {
 		this.difficulty=difficulty;
 	}
-
+	public void setColour(Color colour) {
+		frame.setBackground(colour);
+		loginWindow.setColour(colour);
+		gameWindow.setColour(colour);
+		settingsWindow.setColour(colour);
+		menuWindow.setColour(colour);
+	}
+	public void setBrightness(int value) {
+		
+	}
 	public void setScoreValues(int correct,int incorrect) {
 		this.score=correct-incorrect;
 		this.correctAns=correct;
