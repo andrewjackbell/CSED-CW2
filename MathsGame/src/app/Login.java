@@ -40,7 +40,7 @@ public class Login extends Window{
 	
 	private GButton signUpButton;
 	private GButton loginButton;
-	private JPanel topPanel;
+	private JPanel topPanel; 
 	
 	/**
 	 * 
@@ -94,7 +94,7 @@ public class Login extends Window{
 			//Removes the label from the password field when clicked on
 			public void focusGained(FocusEvent e) {
 				if (passField.getForeground().equals(Color.GRAY)) {
-					passField.setEchoChar('•');
+					passField.setEchoChar('*');
 				    passField.setText("");
 				    passField.setForeground(Color.BLACK);
 				}
@@ -212,6 +212,8 @@ public class Login extends Window{
 					pw.println(",");pw.println(",");pw.println(",");
 					pw.close();
 					alertText.setText("User Created");
+					manager.setUser(username);
+					manager.changeState("menu");
 				}else {
 					alertText.setText("Username taken");
 				}

@@ -14,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Settings extends Window{
 	
@@ -25,6 +27,7 @@ public class Settings extends Window{
 	
 	private Color[] colours= {Color.WHITE,Color.LIGHT_GRAY,Color.ORANGE,Color.GREEN,Color.PINK};
 	private int currentColour=0;
+	private int brightness;
 	
 	public Settings(WindowManager manager,Dimension frameSize) {
 		super(manager,frameSize);
@@ -36,11 +39,33 @@ public class Settings extends Window{
 		}
 		Hashtable<Integer,JLabel > labelTable = new Hashtable<Integer, JLabel>();
 		labelTable.put(50, new JLabel("Brightness"));
-		brightSlider = new JSlider(JSlider.HORIZONTAL,0,100,50); brightSlider.setLabelTable(labelTable);
+		brightSlider = new JSlider(JSlider.HORIZONTAL,-4,4,0); brightSlider.setLabelTable(labelTable);
+		brightSlider.addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if (!brightSlider.getValueIsAdjusting()) {
+					brightness = brightSlider.getValue();
+					Color current = colours[currentColour];
+					if (brightness<0) {
+						for (int i=0;i<Math.abs(brightness);i++) {
+							current = current.darker();
+
+						}
+					}else if (brightness>0){
+						for (int i=0;i<Math.abs(brightness);i++) {
+							current = current.brighter();
+						}
+					}
+					manager.setColour(current);
+					
+				}
+			}
+		});
+		
 		centerPanel = new JPanel(new GridLayout(2,1,10,10));
 		panels[1].setLayout(new FlowLayout(FlowLayout.RIGHT));
 		backButton = new GButton("Back",Color.CYAN,this);
-		colourButton = new GButton("Colour",Color.LIGHT_GRAY,this);
+		colourButton = new GButton("Colour",Color.CYAN,this);
 		panels[1].add(backButton);
 		
 		mainPanel.setBackground(Color.GREEN);

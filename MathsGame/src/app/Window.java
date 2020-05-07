@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 
 public abstract class Window {
 	protected JPanel mainPanel;
@@ -26,7 +27,7 @@ public abstract class Window {
 	}
 	
 	private void colourComponents(Component c,Color colour) {
-		if (c instanceof JPanel) {
+		if (c instanceof JPanel|| c instanceof JSlider) {
 			c.setBackground(colour);
 		}
 		
