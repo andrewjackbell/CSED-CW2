@@ -3,6 +3,7 @@ package app;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -17,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -32,6 +32,7 @@ public class Login extends Window{
 	private JPanel southPanel;
 	private JPanel eastPanel;
 	private JPanel westPanel;
+	private JPanel[] blanks;
 	
 	private JTextField nameField;
 	private JPasswordField passField;
@@ -39,28 +40,31 @@ public class Login extends Window{
 	
 	private GButton signUpButton;
 	private GButton loginButton;
+	private JPanel topPanel; 
 	
 	/**
 	 * 
 	 * Creates the login window object to be displayed. It instantiates the components and adds them to the main panel
 	 * @param manager: the WindowManager of this window, used to call the method to switch from this screen
 	 */
-	public Login(WindowManager manager) {
+	public Login(WindowManager manager,Dimension frameSize) {
 		
-		super(manager);
+		super(manager,frameSize);
+		Dimension x = new Dimension((int)(frameSize.getWidth()/2.5),0);
 		
-		centerPanel = new JPanel(); centerPanel.setLayout(new GridLayout(3,2,10,10));centerPanel.setSize(new Dimension(100,100));
-		southPanel=new JPanel(); southPanel.setPreferredSize(new Dimension(100,500));
-		eastPanel = new JPanel(); eastPanel.setPreferredSize(new Dimension(300,100));
-		westPanel = new JPanel(); westPanel.setPreferredSize(new Dimension(300,100));
+		topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));  topPanel.setPreferredSize(new Dimension(0,(int)(frameSize.getHeight()/4)));
+		centerPanel = new JPanel(); centerPanel.setLayout(new GridLayout(3,4,10,10)); 
+
+		southPanel=new JPanel(); southPanel.setPreferredSize(new Dimension(0,(int)(frameSize.getHeight()/1.8)));
+		eastPanel = new JPanel(); eastPanel.setPreferredSize(x);
+		westPanel = new JPanel(); westPanel.setPreferredSize(x);
 		
-		JPanel blankPanel = new JPanel();
-		JPanel blankPanel1 = new JPanel();
-		JPanel blankPanel2 = new JPanel();
-		JPanel blankPanel3 = new JPanel();
+		blanks=new JPanel[4];
+		for (int i=0;i<4;i++) {
+			blanks[i]=new JPanel();
+		}
 
 		nameField= new JTextField("Username",16);
-		nameField.setPreferredSize(new Dimension(0,10));
 		nameField.setForeground(Color.GRAY);
 		
 		nameField.addFocusListener(new FocusListener() { //Creates new thread to check if focus is gained or lost on the username field
@@ -90,7 +94,7 @@ public class Login extends Window{
 			//Removes the label from the password field when clicked on
 			public void focusGained(FocusEvent e) {
 				if (passField.getForeground().equals(Color.GRAY)) {
-					passField.setEchoChar('•');
+					passField.setEchoChar('*');
 				    passField.setText("");
 				    passField.setForeground(Color.BLACK);
 				}
@@ -111,25 +115,24 @@ public class Login extends Window{
 		loginButton = new GButton("  Login  ",Color.GREEN,this);
 		alertText = new JLabel("Welcome to quick maffs. Please login or sign up");
 		alertText.setFont(GFonts.mediumFont);
-		alertText.setPreferredSize(new Dimension(100,120));
+
 		
-		centerPanel.add(blankPanel);
-		centerPanel.add(blankPanel1);
-		centerPanel.add(blankPanel2);
-		centerPanel.add(blankPanel3);
+		for (int i =0;i<4;i++) {
+			centerPanel.add(blanks[i]);
+		}
 		centerPanel.add(nameField);
 		centerPanel.add(eastPanel);
 		centerPanel.add(passField);
 		centerPanel.add(eastPanel);
 		southPanel.add(signUpButton);
 		southPanel.add(loginButton);
-
+		topPanel.add(alertText);
 		
 		mainPanel.add(westPanel,BorderLayout.WEST);
 		mainPanel.add(eastPanel,BorderLayout.EAST);
 
 		mainPanel.add(southPanel,BorderLayout.SOUTH);
-		mainPanel.add(alertText,BorderLayout.PAGE_START);
+		mainPanel.add(topPanel,BorderLayout.PAGE_START);
 		mainPanel.add(centerPanel,BorderLayout.CENTER);
 
 		
@@ -209,6 +212,8 @@ public class Login extends Window{
 					pw.println(",");pw.println(",");pw.println(",");
 					pw.close();
 					alertText.setText("User Created");
+					manager.setUser(username);
+					manager.changeState("menu");
 				}else {
 					alertText.setText("Username taken");
 				}

@@ -36,9 +36,9 @@ public class GButton extends JButton{
 	}
 	public GButton(String text, Color color, Window window){
 		super(text);
-		bright = color.brighter().brighter();
-		dim= color.darker().darker();
-		this.setBackground(dim);
+		bright = color.brighter();
+		dim= color.darker();
+		this.setBackground(color);
 		this.setBorder(border);
 		this.setFont(font);
 		this.window=window;
